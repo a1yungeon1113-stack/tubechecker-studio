@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)file:///C:/Users/alswl/Downloads/script-studio_2.html -->
+<html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Script Studio - 유튜브 대본 검수기</title>
+<style>
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+:root{--bg:#0a0a0f;--c1:#12121a;--c2:#1a1a28;--c3:#0e0e16;--b1:#2a2a3a;--b2:#3a3a50;--t1:#e8e6f0;--t2:#9896a8;--t3:#5a586a;--ac:#b48cff;--ad:rgba(180,140,255,.15);--er:#ff6b8a;--ok:#6bffa8}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:var(--bg);color:var(--t1);font-family:'Pretendard','Noto Sans KR',-apple-system,sans-serif}
+::selection{background:var(--ad);color:var(--ac)}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+
+textarea,input,select,button{font-family:inherit}
+textarea:focus,input:focus,select:focus{border-color:var(--ac)!important;box-shadow:0 0 0 3px var(--ad);outline:none}
+textarea{width:100%;padding:16px;background:var(--c3);border:1px solid var(--b1);border-radius:12px;color:var(--t1);font-size:14px;line-height:1.8;resize:vertical;outline:none}
+input[type=text],input[type=password]{width:100%;padding:10px 12px;background:var(--c3);border:1px solid var(--b1);border-radius:8px;color:var(--t1);font-size:14px;outline:none}
+select{width:100%;padding:10px 12px;background:var(--c3);border:1px solid var(--b1);border-radius:8px;color:var(--t1);font-size:14px;cursor:pointer;outline:none}
+select option{background:var(--c1);color:var(--t1)}
+
+.bg{background:transparent;color:var(--t2);border:1px solid var(--b1);padding:8px 16px;border-radius:8px;font-size:13px;cursor:pointer;transition:all .2s}
+.bg:hover{border-color:var(--ac);color:var(--ac);background:var(--ad)}
+.bp{width:100%;background:linear-gradient(135deg,#8b5cf6,#a78bfa);color:#fff;border:none;padding:16px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s}
+.bp:hover{box-shadow:0 8px 24px rgba(139,92,246,.3);transform:translateY(-1px)}
+.bp:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.pv{flex:1 1 120px;padding:12px;border:2px solid var(--b1);border-radius:10px;background:var(--c1);color:var(--t2);cursor:pointer;font-size:14px;font-weight:600;text-align:center;transition:all .25s}
+.pv.on{border-color:var(--ac);color:var(--ac);background:var(--ad);box-shadow:0 0 20px rgba(180,140,255,.08)}
+.md{flex:1 1 120px;padding:10px 8px;border:1px solid var(--b1);border-radius:8px;background:var(--c3);color:var(--t2);cursor:pointer;text-align:center;transition:all .2s}
+.md.on{border-color:var(--ac);color:var(--ac);background:var(--ad)}
+.cp{background:transparent;color:var(--t2);border:1px solid var(--b1);padding:6px 12px;border-radius:6px;font-size:12px;cursor:pointer;transition:all .2s}
+.cp:hover{border-color:var(--ac);color:var(--ac)}
+.cp.ok{border-color:var(--ok)!important;color:var(--ok)!important}
+
+.wrap{max-width:860px;margin:0 auto;padding:24px 20px 80px}
+.card{background:var(--c1);border:1px solid var(--b1);border-radius:14px;padding:24px;margin-bottom:24px}
+.lb{font-size:12px;color:var(--t3);font-weight:600;margin-bottom:8px;display:block;text-transform:uppercase;letter-spacing:1px}
+.rw{display:flex;gap:8px;flex-wrap:wrap}
+.lbar{height:3px;background:linear-gradient(90deg,transparent,var(--ac),transparent);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:2px;margin-bottom:32px}
+.ebox{padding:12px 16px;background:rgba(255,107,138,.08);border:1px solid rgba(255,107,138,.2);border-radius:10px;margin-bottom:16px;color:var(--er);font-size:14px}
+
+.hi{padding:12px 16px;background:var(--c2);border-radius:10px;cursor:pointer;border:1px solid transparent;margin-bottom:8px;transition:all .2s}
+.hi:hover{border-color:var(--ac)}
+
+.rs h2{font-size:20px;font-weight:800;margin:28px 0 12px;color:var(--ac);border-bottom:2px solid var(--ad);padding-bottom:8px}
+.rs h3{font-size:16px;font-weight:700;margin:20px 0 8px;color:var(--t1)}
+.rs p{margin:6px 0;line-height:1.8;color:var(--t2)}
+.rs ul{margin:4px 0;padding-left:20px}
+.rs li{color:var(--t2);line-height:1.7;margin:2px 0}
+.rs li::marker{color:var(--ac)}
+.rs strong{color:var(--ac);font-weight:700}
+.rs table{width:100%;border-collapse:collapse;font-size:14px;margin:16px 0}
+.rs th{padding:10px 12px;border-bottom:2px solid var(--b2);text-align:left;font-weight:700;color:var(--t1);background:var(--c2)}
+.rs td{padding:8px 12px;border-bottom:1px solid var(--b1);color:var(--t2)}
+.rs pre{background:var(--c2);padding:16px;border-radius:8px;overflow:auto;font-size:13px;line-height:1.6;margin:12px 0;border:1px solid var(--b1);color:var(--t2);white-space:pre-wrap}
+
+.hd{border-bottom:1px solid var(--b1);background:linear-gradient(180deg,rgba(180,140,255,.03),transparent)}
+.hdi{max-width:860px;margin:0 auto;padding:24px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.badge{font-size:13px;color:var(--ac);font-weight:600;letter-spacing:2px;margin-bottom:4px;text-transform:uppercase}
+h1{font-size:22px;font-weight:800;letter-spacing:-.5px}
+
+.proxy-info{padding:12px 16px;background:rgba(180,140,255,.05);border:1px solid rgba(180,140,255,.15);border-radius:10px;margin-bottom:16px;font-size:13px;color:var(--t2)}
+.proxy-info a{color:var(--ac);text-decoration:none}
+
+@media(max-width:640px){.rw{flex-direction:column}.hdi{flex-direction:column;align-items:flex-start}.cbar{flex-direction:column!important;align-items:flex-start!important}}
+</style>
+</head>
+<body>
+
+<div class="hd"><div class="hdi">
+  <div>
+    <div class="badge">Script Studio</div>
+    <h1>유튜브 대본 검수기</h1>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button class="bg" onclick="tgHist()">히스토리 <span id="hb" style="display:none;background:var(--ac);color:#000;border-radius:10px;padding:1px 6px;font-size:11px;font-weight:700;margin-left:4px"></span></button>
+    <button class="bg" onclick="tgSet()" id="sb">설정 접기</button>
+  </div>
+</div></div>
+
+<div class="wrap">
+
+<!-- History -->
+<div id="hp" class="card" style="display:none">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+    <h3 style="font-size:16px;font-weight:700">검수 히스토리</h3>
+    <button class="bg" style="color:var(--er);border-color:var(--er)" onclick="clrHist()">전체 삭제</button>
+  </div>
+  <div id="hl" style="max-height:360px;overflow:auto"></div>
+</div>
+
+<!-- Settings -->
+<div id="sp" class="card">
+  <h3 style="font-size:15px;font-weight:700;margin-bottom:16px"><span style="color:var(--ac);margin-right:8px">⚙</span>API 설정</h3>
+  
+  <div class="proxy-info" id="proxyInfo">
+    ⓘ 이 도구는 브라우저에서 직접 API를 호출합니다. CORS 문제가 발생하면 자동으로 프록시를 경유합니다.<br>
+    <span style="font-size:11px;color:var(--t3)">API 키는 본인의 브라우저에만 저장되며, 프록시 서버에도 키가 전달되지만 저장되지는 않습니다.</span>
+  </div>
+
+  <div style="margin-bottom:16px">
+    <span class="lb">AI 엔진 선택</span>
+    <div class="rw" id="pvs"><button class="pv on">◆ OpenAI GPT</button><button class="pv">◇ Google Gemini</button><button class="pv">◈ Claude</button></div>
+  </div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap">
+    <div style="flex:1 1 180px">
+      <span class="lb">모델</span>
+      <select id="ms" onchange="cModel=this.value"><option value="gpt-5.4">gpt-5.4</option><option value="gpt-5.4-mini">gpt-5.4-mini</option><option value="gpt-5.4-nano">gpt-5.4-nano</option><option value="gpt-5.3-codex">gpt-5.3-codex</option></select>
+    </div>
+    <div style="flex:2 1 280px">
+      <span class="lb">API 키</span>
+      <div style="position:relative">
+        <input type="password" id="ki" placeholder="API 키를 입력하세요" oninput="svKey(this.value)" style="padding-right:70px">
+        <button onclick="tgKey()" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:12px;padding:4px 8px" id="kt">보기</button>
+      </div>
+      <p style="font-size:11px;color:var(--t3);margin-top:4px">키는 브라우저 localStorage에 저장됩니다</p>
+    </div>
+  </div>
+</div>
+
+<!-- Mode -->
+<div style="margin-bottom:24px">
+  <span class="lb">검수 모드</span>
+  <div class="rw" id="mds"><button class="md on"><div style="font-weight:600;font-size:13px">전체 검수 + 리라이팅</div><div style="font-size:11px;margin-top:2px;opacity:.6">리스크 분석부터 제목·썸네일·설명글까지 전부</div></button><button class="md"><div style="font-weight:600;font-size:13px">검수만</div><div style="font-size:11px;margin-top:2px;opacity:.6">리스크 분석 + 적발 문장만</div></button><button class="md"><div style="font-weight:600;font-size:13px">최종 업로드 세트</div><div style="font-size:11px;margin-top:2px;opacity:.6">바로 쓸 수 있는 완성본만</div></button></div>
+</div>
+
+<!-- Topic & Keywords -->
+<div style="margin-bottom:24px">
+  <span class="lb">영상 주제 / 키워드 (선택이지만 넣으면 훨씬 정확)</span>
+  <input type="text" id="topicInput" placeholder="예: 2025년 띠별 운세 / 다이어트 식단 / 미국 주식 추천 / 부부 갈등 해결법 / 아이폰 신제품 리뷰" style="margin-bottom:8px">
+  <p style="font-size:11px;color:var(--t3)">주제를 넣으면 제목·썸네일·설명글·해시태그가 이 주제에 맞게 생성됩니다</p>
+</div>
+
+<!-- Reference Tone -->
+<div style="margin-bottom:24px">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <span class="lb" style="margin-bottom:0">참고 말투 (기존 영상 스크립트 붙여넣기)</span>
+    <button class="bg" onclick="tgGuide()" style="font-size:11px;padding:4px 10px">유튜브 자막 복사하는 법</button>
+  </div>
+  <div id="guideBox" style="display:none;background:var(--c2);border:1px solid var(--b1);border-radius:10px;padding:16px;margin-bottom:10px;font-size:13px;color:var(--t2);line-height:1.8">
+    <strong style="color:var(--ac)">유튜브에서 자막 복사하는 법 (30초)</strong><br><br>
+    1. 유튜브 영상 아래 <strong style="color:var(--t1)">⋯ 더보기</strong> 클릭<br>
+    2. <strong style="color:var(--t1)">스크립트 표시</strong> (또는 "자막 보기") 클릭<br>
+    3. 자막 전체를 <strong style="color:var(--t1)">드래그 → Ctrl+C</strong> (맥: Cmd+C)<br>
+    4. 아래 참고 말투 칸에 <strong style="color:var(--t1)">Ctrl+V</strong> 붙여넣기<br><br>
+    <span style="color:var(--t3)">💡 자막이 안 보이면: 영상에 자막이 없는 경우입니다. 이 경우 기존 대본을 직접 붙여넣으세요.</span>
+  </div>
+  <textarea id="refTone" rows="4" placeholder="참고할 영상의 스크립트나 자막을 여기에 붙여넣으세요. 이 말투·톤·분위기를 분석해서 리라이팅에 반영합니다. (선택사항)"></textarea>
+  <p style="font-size:11px;color:var(--t3);margin-top:4px">넣으면 이 채널의 말투·톤·문체를 리라이팅에 그대로 반영합니다. 안 넣어도 됩니다.</p>
+</div>
+
+<!-- Scripts -->
+<div style="margin-bottom:24px">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <span class="lb" style="margin-bottom:0">대본 입력</span>
+    <button class="bg" onclick="addSc()">+ 대본 추가</button>
+  </div>
+  <div id="sa"><div style="margin-bottom: 12px;"><textarea rows="8" placeholder="유튜브 대본을 붙여넣으세요... 제목, 썸네일 문구, Shorts 문구, 라이브 예고문도 가능합니다."></textarea></div></div>
+</div>
+
+<div id="eb" class="ebox" style="display:none"></div>
+<button class="bp" id="go" onclick="run()" style="margin-bottom:32px">검수 + 리라이팅 시작</button>
+<div id="lb" class="lbar" style="display:none"></div>
+
+<!-- Result -->
+<div id="rp" class="card" style="display:none;padding:28px 24px">
+  <div class="cbar" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--b1);flex-wrap:wrap;gap:8px">
+    <h2 style="font-size:18px;font-weight:800;margin:0;border:none;padding:0">검수 결과</h2>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <button class="cp" onclick="cpAll(this)">전체 복사</button>
+      <button class="cp" onclick="cpSec(&#39;제목&#39;,this)">제목</button>
+      <button class="cp" onclick="cpSec(&#39;썸네일&#39;,this)">썸네일</button>
+      <button class="cp" onclick="cpSec(&#39;설명글&#39;,this)">설명글</button>
+      <button class="cp" onclick="cpSec(&#39;리라이팅 대본&#39;,this)">대본</button>
+    </div>
+  </div>
+  <div id="rc" class="rs"></div>
+</div>
+
+</div>
+
+<script>
+// ── 통합 시스템 프롬프트 (모든 카테고리 자동 처리) ──
+const SYS = `당신은 유튜브 채널 대본 전문 리라이터입니다. 운세, 건강, 투자, 자기계발, 연애, 리뷰, 뉴스, 키즈/육아 등 모든 카테고리의 대본을 검수합니다.
+
+핵심 철학: 원본 대본의 자연스러운 흐름, 서사, 감정선, 말투를 최대한 살리세요. 정책적으로 명백히 위험한 표현만 최소한으로 손대세요. 과도한 검열 금물.
+
+먼저 대본 내용을 분석해 카테고리를 자동 판단한 뒤, 해당 카테고리의 위험 표현 기준을 적용하세요.
+
+[공통 위험 표현 - 모든 카테고리]
+- 자극적 낚시 ("충격", "경악", "단독", "방금 터졌다") → 객관적 표현
+- 대가성 CTA ("좋아요 누르면 복", "구독 안 하면 손해") → "도움이 되셨다면 부탁드립니다"
+- 명예훼손·비방 → 중립적 표현
+- 출처 없는 단정 → "~로 알려져 있습니다"
+- 허위 정보 → 검증된 사실만
+
+[운세/사주/타로/신점]
+- 확정 예언 ("반드시", "무조건", "100%") → "~흐름입니다", "~기운이 보입니다"
+- 공포 강매 ("안 보면 큰일") → "조심해서 보시면 좋겠습니다"
+- 신비로운 톤, 무속적 분위기는 그대로 유지
+
+[건강/다이어트/운동]
+- 질병 치료 단정 ("암 낫는다", "당뇨 완치") → "건강 관리에 도움될 수 있습니다"
+- 의약품 효과 보장 → "전문가 상담 필요"
+- 다이어트 보장 ("일주일 10kg") → "꾸준히 하면 변화 기대"
+- 의료 행위 권유 ("병원 가지 마세요") 절대 금지
+- 면책: "본 영상은 참고용이며, 의료적 판단은 전문가와 상의하세요"
+
+[투자/재테크/주식]
+- 수익 보장 ("무조건 떡상", "10배 보장") → "상승 가능성", "긍정적 시그널"
+- 매수·매도 권유 ("지금 사세요") → "관심 있게 지켜볼 만합니다"
+- 종목 추천 단정 → "이런 흐름이 보입니다"
+- 손실 무시 ("절대 손해 안 봄") → "투자에는 항상 리스크가 있습니다"
+- 면책: "본 영상은 투자 권유가 아닌 정보 제공 목적이며, 투자 결정과 책임은 본인에게 있습니다"
+
+[자기계발/동기부여]
+- 공포 마케팅 ("이거 안 하면 인생 망함") → "지금 시작하면 좋은 변화"
+- 성공 보장 ("100% 부자됨") → "효과를 본 사람들이 많은 방법"
+- 자존감 깎기 ("당신은 실패자") → 동기부여 톤은 유지하되 비하 제거
+- 정신건강 단정 ("우울증은 노력으로 극복") → "전문가 상담 필요할 수 있습니다"
+- 강한 동기부여 메시지 자체는 유지 (그게 매력)
+
+[연애/심리/관계]
+- 단정적 인간관계 ("이런 사람은 반드시 떠납니다") → "이런 패턴이 보일 수 있습니다"
+- 성별·연령 비하 → 중립적 표현
+- 심리 진단 ("당신은 회피형") → "회피 성향이 보일 수 있습니다"
+- 관계 단절 강요 ("당장 손절") → "거리를 두는 것을 고려"
+- 솔직한 연애 통찰은 유지
+
+[리뷰/언박싱/제품 추천]
+- 협찬 미고지 → "유료광고 포함" 또는 "내돈내산" 명시 권고
+- 경쟁 제품 비방 ("X사는 쓰레기") → "개인적으로 Y가 더 만족"
+- 효과·성능 단정 ("100% 만족 보장") → "제 경우엔 만족스러웠습니다"
+- 객관적 스펙·기능 설명, 솔직한 후기는 유지
+
+[뉴스/이슈/시사]
+- 자극적 클릭베이트 → 사실 기반 객관적 표현
+- 검증 안 된 단정 → "보도에 따르면", "~로 알려졌습니다"
+- 특정 인물 비방 → 사실 위주, 의견은 의견으로 명시
+- 음모론·허위정보 → 검증된 사실만
+
+[키즈/육아/교육 - 가장 엄격]
+- 폭력, 무서운 묘사, 욕설 → 즉시 제거
+- 위험한 행동 권유 → 안전 경고 또는 제거
+- 어린이 단정 평가 ("문제아") → "이런 행동이 보일 때"
+- 육아법 단정 ("이렇게 안 키우면 망친다") → "이런 방법을 시도해볼 수 있습니다"
+- 교육 효과 보장 ("무조건 영재") → "도움이 될 수 있는 방법"
+
+[리라이팅 출력 규칙 - 매우 중요]
+- 원본을 거의 그대로 유지하되, 수정한 부분만 **굵게** 표시
+- 원본 분량을 줄이지 마세요. 입력된 대본과 동일한 길이로 출력
+- "(중략)", "이하 동일", "나머지는 원본과 같음" 같은 생략 표현 절대 금지
+- 문장을 합치거나 요약하지 마세요
+- 위험하지 않은 부분은 반드시 원본 그대로 출력
+
+[출력 형식]
+
+## [1] 리스크 요약
+- 감지된 카테고리: (자동 판단)
+- 통과 가능성: 높음/보통/낮음
+- 핵심 리스크 한 줄
+- 주요 위험 요소 최대 3개
+
+## [2] 적발 문장
+| 원문 | 문제 | 위험도 | 수정 방향 |
+(정책적으로 명백히 위험한 것만)
+
+## [3] 리라이팅 대본
+(원본 거의 그대로 + 위험 부분만 최소 수정 + 변경점 **굵게**, 분량 유지)
+
+## [4] 제목 (5개)
+SEO 키워드 포함, 후킹+정책 안전 균형
+
+## [5] 썸네일 문구 (5개)
+10자 내외, 자극적 표현 배제
+
+## [6] 설명글
+첫 2줄 후킹 + 본문 3~5줄 + 면책 + 해시태그 10~15개
+
+## [7] 고정댓글 + CTA
+고정댓글 1개, CTA 3개 (대가성 표현 없이)
+
+## [9] 최종 권고
+바로 업로드 가능 / 일부 수정 후 업로드 권장 / 영상 내부 맥락 보강 후 업로드 권장 / 업로드 비추천`;
+const APIS = {
+  openai: {
+    name:'OpenAI GPT', icon:'\u25C6',
+    models:['gpt-5.4','gpt-5.4-mini','gpt-5.4-nano','gpt-5.3-codex'],
+    def:'gpt-5.4',
+    url:()=>'https://api.openai.com/v1/chat/completions',
+    hdr:k=>({'Content-Type':'application/json','Authorization':'Bearer '+k}),
+    body:(m,p)=>JSON.stringify({model:m,messages:[{role:'system',content:SYS},{role:'user',content:p}],max_tokens:16384,temperature:.7}),
+    ext:d=>d.choices?.[0]?.message?.content||''
+  },
+  gemini: {
+    name:'Google Gemini', icon:'\u25C7',
+    models:['gemini-3.1-pro-preview','gemini-3-flash-preview','gemini-3.1-flash-lite-preview','gemini-2.5-flash'],
+    def:'gemini-3.1-pro-preview',
+    url:(m,k)=>'https://generativelanguage.googleapis.com/v1beta/models/'+m+':generateContent?key='+k,
+    hdr:()=>({'Content-Type':'application/json'}),
+    body:(m,p)=>JSON.stringify({systemInstruction:{parts:[{text:SYS}]},contents:[{parts:[{text:p}]}],generationConfig:{maxOutputTokens:16384,temperature:.7}}),
+    ext:d=>(d.candidates?.[0]?.content?.parts||[]).map(p=>p.text).join('')
+  },
+  claude: {
+    name:'Claude', icon:'\u25C8',
+    models:['claude-sonnet-4-6-20250514','claude-opus-4-6-20250301','claude-haiku-4-5-20251001'],
+    def:'claude-sonnet-4-6-20250514',
+    url:()=>'https://api.anthropic.com/v1/messages',
+    hdr:k=>({'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'}),
+    body:(m,p)=>JSON.stringify({model:m,system:SYS,messages:[{role:'user',content:p}],max_tokens:16384}),
+    ext:d=>(d.content||[]).map(c=>c.text||'').join('')
+  }
+};
+
+const MODES=[
+  {id:'full',l:'전체 검수 + 리라이팅',d:'리스크 분석부터 제목·썸네일·설명글까지 전부'},
+  {id:'check',l:'검수만',d:'리스크 분석 + 적발 문장만'},
+  {id:'upload',l:'최종 업로드 세트',d:'바로 쓸 수 있는 완성본만'}
+];
+
+const LMSG=['대본을 분석하고 있습니다...','위험 표현을 찾고 있습니다...','안전한 표현으로 변환 중...','SEO 최적화 작업 중...','제목과 썸네일을 만들고 있습니다...','최종 검수 중...'];
+
+// CORS 프록시 목록 (순서대로 시도)
+const PROXIES = [
+  '', // 직접 호출 먼저 시도
+  'https://corsproxy.io/?',
+  'https://api.allorigins.win/raw?url=',
+];
+
+let cProv='openai', cModel=APIS.openai.def, cMode='full', scripts=[''], hist=[], rTxt='', lIv=null;
+
+// ── Init ──
+window.onload=function(){
+  ldKeys(); ldHist(); rProv(); rModel(); rMode(); rSc(); uHb();
+};
+
+// ── Storage ──
+function ldKeys(){
+  try{
+    const s=localStorage.getItem('fss-k');
+    if(s){const p=JSON.parse(s);const i=document.getElementById('ki');if(p[cProv])i.value=p[cProv];}
+  }catch(e){}
+}
+function svKey(v){
+  try{let s={};try{s=JSON.parse(localStorage.getItem('fss-k'))||{};}catch(e){}s[cProv]=v;localStorage.setItem('fss-k',JSON.stringify(s));}catch(e){}
+}
+function gKey(){return document.getElementById('ki').value.trim();}
+function ldHist(){try{const s=localStorage.getItem('fss-h');if(s)hist=JSON.parse(s);}catch(e){hist=[];}}
+function svHist(){try{localStorage.setItem('fss-h',JSON.stringify(hist.slice(0,50)));}catch(e){}}
+
+// ── Render ──
+function rProv(){
+  const el=document.getElementById('pvs');el.innerHTML='';
+  Object.entries(APIS).forEach(([k,c])=>{
+    const b=document.createElement('button');
+    b.className='pv'+(cProv===k?' on':'');
+    b.textContent=c.icon+' '+c.name;
+    b.onclick=()=>{cProv=k;cModel=c.def;rProv();rModel();
+      try{const s=JSON.parse(localStorage.getItem('fss-k'))||{};document.getElementById('ki').value=s[k]||'';}catch(e){document.getElementById('ki').value='';}
+    };
+    el.appendChild(b);
+  });
+}
+
+function rModel(){
+  const s=document.getElementById('ms');s.innerHTML='';
+  APIS[cProv].models.forEach(m=>{const o=document.createElement('option');o.value=m;o.textContent=m;if(m===cModel)o.selected=true;s.appendChild(o);});
+}
+
+function rMode(){
+  const el=document.getElementById('mds');el.innerHTML='';
+  MODES.forEach(m=>{
+    const b=document.createElement('button');
+    b.className='md'+(cMode===m.id?' on':'');
+    b.innerHTML='<div style="font-weight:600;font-size:13px">'+m.l+'</div><div style="font-size:11px;margin-top:2px;opacity:.6">'+m.d+'</div>';
+    b.onclick=()=>{cMode=m.id;rMode();};
+    el.appendChild(b);
+  });
+}
+
+function rSc(){
+  const el=document.getElementById('sa');el.innerHTML='';
+  scripts.forEach((sc,i)=>{
+    const d=document.createElement('div');d.style.marginBottom='12px';
+    if(scripts.length>1){
+      const h=document.createElement('div');h.style.cssText='display:flex;justify-content:space-between;align-items:center;margin-bottom:6px';
+      h.innerHTML='<span style="font-size:12px;font-weight:600;color:var(--ac)">대본 '+(i+1)+'</span>';
+      const db=document.createElement('button');db.textContent='삭제';db.style.cssText='background:none;border:none;color:var(--er);cursor:pointer;font-size:12px;padding:2px 6px';
+      db.onclick=()=>{scripts.splice(i,1);rSc();};h.appendChild(db);d.appendChild(h);
+    }
+    const ta=document.createElement('textarea');ta.rows=8;ta.value=sc;
+    ta.placeholder='유튜브 대본을 붙여넣으세요... 제목, 썸네일 문구, Shorts 문구, 라이브 예고문도 가능합니다.';
+    ta.oninput=function(){scripts[i]=this.value;};
+    d.appendChild(ta);el.appendChild(d);
+  });
+}
+function addSc(){scripts.push('');rSc();}
+
+// ── Toggle ──
+function tgSet(){const p=document.getElementById('sp'),b=document.getElementById('sb');if(p.style.display==='none'){p.style.display='block';b.textContent='설정 접기';}else{p.style.display='none';b.textContent='설정 열기';}}
+function tgHist(){const p=document.getElementById('hp');p.style.display=p.style.display==='none'?'block':'none';if(p.style.display==='block')rHL();}
+function tgKey(){const i=document.getElementById('ki'),b=document.getElementById('kt');if(i.type==='password'){i.type='text';b.textContent='숨기기';}else{i.type='password';b.textContent='보기';}}
+function uHb(){const b=document.getElementById('hb');if(hist.length>0){b.style.display='inline';b.textContent=hist.length;}else b.style.display='none';}
+
+function rHL(){
+  const el=document.getElementById('hl');
+  if(!hist.length){el.innerHTML='<p style="color:var(--t3);text-align:center;padding:24px">아직 검수 기록이 없습니다</p>';return;}
+  el.innerHTML='';
+  hist.forEach(h=>{
+    const d=document.createElement('div');d.className='hi';
+    d.innerHTML='<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:13px;font-weight:600">'+esc(h.prov)+' \xB7 '+esc(h.model)+'</span><span style="font-size:12px;color:var(--t3)">'+esc(h.date)+'</span></div><div style="font-size:12px;color:var(--t3)">'+esc(h.mode)+' \xB7 대본 '+h.cnt+'개</div><div style="font-size:13px;color:var(--t2);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(h.prev)+'</div>';
+    d.onclick=()=>{rTxt=h.result;showR(h.result);document.getElementById('hp').style.display='none';};
+    el.appendChild(d);
+  });
+}
+function clrHist(){hist=[];svHist();uHb();rHL();}
+
+function tgGuide(){const b=document.getElementById('guideBox');b.style.display=b.style.display==='none'?'block':'none';}
+
+// ── Prompt ──
+function getRefTone(){
+  const t=document.getElementById('refTone').value.trim();
+  if(!t)return '';
+  // 참고 말투는 최대 2000자만 사용 (토큰 절약)
+  const sample=t.length>2000?t.slice(0,2000)+'...(이하 생략)':t;
+  return '\n\n[참고 말투 샘플]:\n아래는 이 채널의 기존 영상 스크립트입니다. 이 말투·톤·문체·분위기·호칭·비유 스타일을 분석하고, 리라이팅할 때 동일한 톤으로 맞춰 주세요.\n---\n'+sample+'\n---';
+}
+
+function getTopic(){
+  const t=document.getElementById('topicInput').value.trim();
+  return t ? '\n\n[영상 주제]: '+t+'\n이 주제에 맞게 제목, 썸네일 문구, 설명글, 해시태그를 생성해 주세요.' : '';
+}
+
+function bldP(){
+  const vs=scripts.filter(s=>s.trim());if(!vs.length)return'';
+  let mi='';
+  if(cMode==='check')mi='\n\n[모드: 검수만] 리스크 요약과 적발 문장만 출력해 주세요. 리라이팅은 생략합니다.';
+  else if(cMode==='upload')mi='\n\n[모드: 최종 업로드 세트] 리라이팅 대본 + 제목 + 썸네일 + 설명글 + CTA 완성본만 출력해 주세요.';
+  const topic=getTopic();
+  const ref=getRefTone();
+  if(vs.length===1)return'다음 유튜브 대본을 검수하고 리라이팅해 주세요.'+topic+ref+mi+'\n\n---\n\n'+vs[0];
+  return'다음 유튜브 대본 '+vs.length+'개를 각각 검수하고 리라이팅해 주세요.'+topic+ref+mi+'\n\n'+vs.map((s,i)=>'---\n[대본 '+(i+1)+']\n'+s).join('\n\n');
+}
+
+// ── Fetch with proxy fallback ──
+async function fetchWithProxy(url, options) {
+  // 1차: 직접 호출
+  try {
+    const res = await fetch(url, options);
+    if (res.ok) return res;
+    // 4xx/5xx는 API 자체 에러이므로 프록시 시도 안 함
+    return res;
+  } catch(e) {
+    // CORS나 네트워크 에러 → 프록시 시도
+  }
+
+  // 2차: CORS 프록시 경유
+  for (let i = 1; i < PROXIES.length; i++) {
+    try {
+      const proxyUrl = PROXIES[i] + encodeURIComponent(url);
+      const res = await fetch(proxyUrl, {
+        method: options.method || 'POST',
+        headers: options.headers,
+        body: options.body
+      });
+      if (res.ok || res.status >= 400) return res; // API 에러도 반환
+    } catch(e) {
+      continue; // 다음 프록시 시도
+    }
+  }
+
+  throw new Error('API 연결에 실패했습니다. 인터넷 연결을 확인하거나 잠시 후 다시 시도해 주세요.');
+}
+
+// ── Split long text into chunks ──
+function splitText(text, maxLen) {
+  if (text.length <= maxLen) return [text];
+  const chunks = [];
+  const lines = text.split('\n');
+  let current = '';
+  for (const line of lines) {
+    if ((current + '\n' + line).length > maxLen && current.length > 0) {
+      chunks.push(current.trim());
+      current = line;
+    } else {
+      current += (current ? '\n' : '') + line;
+    }
+  }
+  if (current.trim()) chunks.push(current.trim());
+  return chunks;
+}
+
+// ── Single API call ──
+async function callAPI(prompt) {
+  const key = gKey();
+  const cfg = APIS[cProv];
+  const url = cfg.url(cModel, key);
+  const headers = cfg.hdr(key);
+  const body = cfg.body(cModel, prompt);
+  const res = await fetchWithProxy(url, { method:'POST', headers, body });
+  if (!res.ok) {
+    let em = 'API 오류 (' + res.status + ')';
+    try { const ed = await res.json(); em = ed.error?.message || em; } catch(e) {}
+    throw new Error(em);
+  }
+  const data = await res.json();
+  const text = cfg.ext(data);
+  if (!text) throw new Error('응답이 비어있습니다. API 키와 모델을 확인해 주세요.');
+  return text;
+}
+
+// ── Run (with improved split for long scripts) ──
+async function run(){
+  const key=gKey();
+  if(!key){shErr('API 키를 입력해 주세요.');return;}
+  const validScripts = scripts.filter(s=>s.trim());
+  if(!validScripts.length){shErr('대본을 최소 1개 입력해 주세요.');return;}
+
+  hiErr();
+  document.getElementById('rp').style.display='none';
+  const btn=document.getElementById('go');
+  btn.disabled=true;
+  document.getElementById('lb').style.display='block';
+
+  let li=0;btn.textContent=LMSG[0];
+  lIv=setInterval(()=>{li=(li+1)%LMSG.length;btn.textContent=LMSG[li];},3000);
+
+  try{
+    let mi='';
+    if(cMode==='check')mi='\n\n[모드: 검수만] 리스크 요약과 적발 문장만 출력해 주세요. 리라이팅은 생략합니다.';
+    else if(cMode==='upload')mi='\n\n[모드: 최종 업로드 세트] 리라이팅 대본만 출력해 주세요. 제목·썸네일·설명글은 이후 별도로 요청합니다.';
+
+    const totalLen = validScripts.reduce((a,s) => a + s.length, 0);
+    let finalText = '';
+    const topic=getTopic();
+    const ref=getRefTone();
+
+    if (totalLen > 5000) {
+      // 긴 대본: 파트별 리라이팅 → 마지막에 제목/썸네일/설명글 별도 생성
+      const allScriptResults = [];
+
+      for (let si = 0; si < validScripts.length; si++) {
+        const sc = validScripts[si];
+        const scriptLabel = validScripts.length > 1 ? ' (대본 ' + (si+1) + '/' + validScripts.length + ')' : '';
+        const chunks = splitText(sc, 3000);
+        const partResults = [];
+
+        for (let ci = 0; ci < chunks.length; ci++) {
+          const partPrompt = '다음은 유튜브 대본' + scriptLabel + '의 파트 ' + (ci+1) + '/' + chunks.length + '입니다.' + ref + '\n\n[필수 지시]\n1. 아래 대본 전체를 처음부터 끝까지 빠짐없이 리라이팅하여 출력하세요.\n2. 원본의 말투·서사·감정선을 최대한 살리세요.\n3. 정책적으로 명백히 위험한 표현(확정 예언, 공포 강매, 대가성 CTA, 건강/투자 단정)만 최소한으로 수정하세요.\n4. 수정한 부분은 **굵게** 표시하세요.\n5. "(중략)", "이하 동일", "나머지는 원본과 같음" 같은 생략 표현을 절대 사용하지 마세요.\n6. 적발 문장 표는 리라이팅 대본 뒤에 간략히 붙이세요.\n7. 제목·썸네일·설명글은 출력하지 마세요.\n\n[출력 순서]\n## 리라이팅 대본\n(전체 대본 출력)\n\n## 적발 문장\n(표)\n\n---\n대본 원문:\n\n' + chunks[ci];
+          btn.textContent = (validScripts.length > 1 ? '대본 '+(si+1)+' ' : '') + '파트 ' + (ci+1) + '/' + chunks.length + ' 리라이팅 중...';
+          const partResult = await callAPI(partPrompt);
+          partResults.push(partResult);
+        }
+        allScriptResults.push({ label: scriptLabel, parts: partResults, original: sc });
+      }
+
+      // 검수만 모드면 여기서 끝
+      if (cMode === 'check') {
+        if (allScriptResults.length === 1) {
+          finalText = allScriptResults[0].parts.join('\n\n---\n\n');
+        } else {
+          finalText = allScriptResults.map((r, i) => '# 대본 ' + (i+1) + ' 결과\n\n' + r.parts.join('\n\n---\n\n')).join('\n\n========================================\n\n');
+        }
+      } else {
+        // 제목·썸네일·설명글·CTA를 별도 호출로 생성
+        const metaResults = [];
+        for (let si = 0; si < allScriptResults.length; si++) {
+          const r = allScriptResults[si];
+          // 원본 대본에서 앞 1500자 + 뒤 1500자를 요약용으로 추출
+          const orig = r.original;
+          const summary = orig.length > 3000 ? orig.slice(0,1500) + '\n...(중략)...\n' + orig.slice(-1500) : orig;
+
+          const metaPrompt = '다음 유튜브 대본' + r.label + '의 핵심 내용을 바탕으로 아래 항목만 생성해 주세요.' + topic + ref + '\n\n## [1] 리스크 요약\n- 통과 가능성: 높음/보통/낮음\n- 핵심 리스크 한 줄\n- 주요 위험 요소 최대 3개\n\n## [4] 제목 (5개)\nSEO 키워드 포함, 후킹+정책 안전 균형\n\n## [5] 썸네일 문구 (5개)\n10자 내외, 징조형·경고형\n\n## [6] 설명글\n첫 2줄 후킹 + 본문 3~5줄 + 면책 + 해시태그 10~15개\n\n## [7] 고정댓글 + CTA\n고정댓글 1개, CTA 3개\n\n## [9] 최종 권고\n\n---\n대본 요약:\n' + summary;
+
+          btn.textContent = (allScriptResults.length > 1 ? '대본 '+(si+1)+' ' : '') + '제목·썸네일·설명글 생성 중...';
+          const metaResult = await callAPI(metaPrompt);
+          metaResults.push(metaResult);
+        }
+
+        // 합치기: 리라이팅 대본 + 메타데이터
+        if (allScriptResults.length === 1) {
+          finalText = metaResults[0] + '\n\n## [3] 리라이팅 대본\n\n' + allScriptResults[0].parts.join('\n\n---\n\n');
+        } else {
+          const combined = [];
+          for (let i = 0; i < allScriptResults.length; i++) {
+            combined.push('# 대본 ' + (i+1) + ' 결과\n\n' + metaResults[i] + '\n\n## [3] 리라이팅 대본\n\n' + allScriptResults[i].parts.join('\n\n---\n\n'));
+          }
+          finalText = combined.join('\n\n========================================\n\n');
+        }
+      }
+    } else {
+      // 짧은 대본: 한 번에 처리
+      const prompt = bldP();
+      finalText = await callAPI(prompt);
+    }
+
+    rTxt = finalText;
+    showR(finalText);
+
+    hist.unshift({id:Date.now(),date:new Date().toLocaleString('ko-KR'),prov:APIS[cProv].name,model:cModel,mode:MODES.find(m=>m.id===cMode)?.l||'',cnt:validScripts.length,prev:(validScripts[0]?.trim().slice(0,80)||'')+'...',result:finalText});
+    if(hist.length>50)hist=hist.slice(0,50);
+    svHist();uHb();
+
+  }catch(e){
+    shErr(e.message||'알 수 없는 오류가 발생했습니다.');
+  }finally{
+    clearInterval(lIv);btn.disabled=false;btn.textContent='검수 + 리라이팅 시작';
+    document.getElementById('lb').style.display='none';
+  }
+}
+
+// ── Markdown ──
+function renderMd(text){
+  let h=esc(text);
+  // code blocks first
+  h=h.replace(/```[\w]*\n([\s\S]*?)```/g,'<pre>$1</pre>');
+  // headers
+  h=h.replace(/^## (.+)$/gm,'<h2>$1</h2>');
+  h=h.replace(/^### (.+)$/gm,'<h3>$1</h3>');
+  // bold
+  h=h.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  // tables
+  h=h.replace(/(^\|.+\|$\n^\|[-| :]+\|$\n(?:^\|.+\|$\n?)*)/gm, function(block){
+    const lines=block.trim().split('\n');
+    if(lines.length<2)return block;
+    let t='<table><thead><tr>';
+    lines[0].split('|').filter(Boolean).forEach(c=>{t+='<th>'+c.trim()+'</th>';});
+    t+='</tr></thead><tbody>';
+    for(let i=2;i<lines.length;i++){
+      t+='<tr>';
+      lines[i].split('|').filter(Boolean).forEach(c=>{t+='<td>'+c.trim()+'</td>';});
+      t+='</tr>';
+    }
+    t+='</tbody></table>';
+    return t;
+  });
+  // lists
+  h=h.replace(/^- (.+)$/gm,'<li>$1</li>');
+  h=h.replace(/((?:<li>.*<\/li>\s*)+)/g,'<ul>$1</ul>');
+  // paragraphs
+  const lines=h.split('\n');
+  const out=[];
+  for(const line of lines){
+    const tr=line.trim();
+    if(!tr){out.push('');continue;}
+    if(tr.startsWith('<'))out.push(tr);
+    else out.push('<p>'+tr+'</p>');
+  }
+  return out.join('\n');
+}
+
+function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML;}
+
+function showR(text){
+  const p=document.getElementById('rp'),c=document.getElementById('rc');
+  c.innerHTML=renderMd(text);
+  p.style.display='block';
+  setTimeout(()=>p.scrollIntoView({behavior:'smooth'}),100);
+}
+
+// ── Copy ──
+function doCp(text,btn){
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).catch(()=>fbCp(text));
+  }else fbCp(text);
+  if(btn){const o=btn.textContent;btn.textContent='\u2713 복사됨';btn.classList.add('ok');setTimeout(()=>{btn.textContent=o;btn.classList.remove('ok');},2000);}
+}
+function fbCp(t){const a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;left:-9999px';document.body.appendChild(a);a.select();document.execCommand('copy');document.body.removeChild(a);}
+function cpAll(b){doCp(rTxt,b);}
+function cpSec(title,b){
+  const rx=new RegExp('## \\[?\\d*\\]?\\s*'+title+'[\\s\\S]*?(?=## \\[?\\d|$)');
+  const m=rTxt.match(rx);doCp(m?m[0].trim():'',b);
+}
+
+function shErr(m){const e=document.getElementById('eb');e.textContent=m;e.style.display='block';}
+function hiErr(){document.getElementById('eb').style.display='none';}
+</script>
+
+
+
+</body></html>
