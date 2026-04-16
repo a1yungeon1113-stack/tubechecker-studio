@@ -138,7 +138,7 @@ h1{font-size:22px;font-weight:800;letter-spacing:-.5px}
     <div style="flex:2 1 280px">
       <span class="lb">API 키</span>
       <div style="position:relative">
-        <input type="password" id="ki" placeholder="API 키를 입력하세요" oninput="svKey(this.value);checkKeyStatus()" style="padding-right:70px">
+        <input type="password" id="ki" placeholder="API 키를 입력하세요" oninput="svKey(this.value);checkKeyStatus()" style="padding-right:70px" autocomplete="off" data-lpignore="true">
         <button onclick="tgKey()" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:12px;padding:4px 8px" id="kt">보기</button>
       </div>
       <p style="font-size:11px;color:var(--t3);margin-top:4px">키는 브라우저 localStorage에 저장됩니다</p>
@@ -787,6 +787,16 @@ function cpSec(title,b){
 
 function shErr(m){const e=document.getElementById('eb');e.textContent=m;e.style.display='block';}
 function hiErr(){document.getElementById('eb').style.display='none';}
+
+window.addEventListener('load', function() {
+  setTimeout(function() {
+    const keyInput = document.getElementById('ki');
+    if (keyInput && keyInput.value && !localStorage.getItem('saved-api-key')) {
+      // 자동완성으로 채워진 값 제거
+      keyInput.value = '';
+    }
+  }, 100);
+});
 </script>
 
 
