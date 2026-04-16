@@ -63,9 +63,37 @@ h1{font-size:22px;font-weight:800;letter-spacing:-.5px}
 .proxy-info a{color:var(--ac);text-decoration:none}
 
 @media(max-width:640px){.rw{flex-direction:column}.hdi{flex-direction:column;align-items:flex-start}.cbar{flex-direction:column!important;align-items:flex-start!important}}
+.login-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-box{background:var(--c1);border:1px solid var(--b1);border-radius:16px;padding:40px 32px;max-width:420px;width:100%;text-align:center}
+.login-box h2{font-size:22px;font-weight:800;margin-bottom:8px;color:var(--t1)}
+.login-box p{color:var(--t2);font-size:14px;margin-bottom:24px;line-height:1.6}
+.login-input{width:100%;padding:14px 16px;background:var(--c3);border:2px solid var(--b1);border-radius:10px;color:var(--t1);font-size:16px;margin-bottom:12px;outline:none;text-align:center;letter-spacing:2px}
+.login-input:focus{border-color:var(--ac)}
+.login-btn{width:100%;background:linear-gradient(135deg,#8b5cf6,#a78bfa);color:#fff;border:none;padding:14px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s}
+.login-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(139,92,246,.3)}
+.login-err{color:var(--er);font-size:13px;margin-top:12px;display:none}
+.login-badge{font-size:12px;color:var(--ac);letter-spacing:2px;margin-bottom:16px;text-transform:uppercase;font-weight:600}
+.status-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.status-red{background:#ff6b8a;box-shadow:0 0 8px rgba(255,107,138,0.6)}
+.status-yellow{background:#ffd06b;box-shadow:0 0 8px rgba(255,208,107,0.6)}
+.status-green{background:#6bffa8;box-shadow:0 0 8px rgba(107,255,168,0.6);animation:pulse-green 2s infinite}
+@keyframes pulse-green{0%,100%{box-shadow:0 0 8px rgba(107,255,168,0.6)}50%{box-shadow:0 0 16px rgba(107,255,168,1)}}
+.status-bar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--c3);border:1px solid var(--b1);border-radius:8px;margin-top:8px;font-size:13px;color:var(--t2)}
+.test-btn{background:transparent;color:var(--ac);border:1px solid var(--ac);padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer;margin-left:auto}
+.test-btn:hover{background:var(--ac);color:#fff}
 </style>
 </head>
 <body>
+<div id="loginOverlay" class="login-overlay">
+  <div class="login-box">
+    <div class="login-badge">Script Studio</div>
+    <h2>접속 코드 입력</h2>
+    <p>이 도구는 허가된 사용자만 이용 가능합니다.<br>접속 코드를 입력해 주세요.</p>
+    <input type="password" id="loginCode" class="login-input" placeholder="접속 코드" onkeypress="if(event.key==='Enter')checkLogin()" autocomplete="off">
+    <button class="login-btn" onclick="checkLogin()">입장하기</button>
+    <div id="loginErr" class="login-err">접속 코드가 일치하지 않습니다</div>
+  </div>
+</div>
 
 <div class="hd"><div class="hdi">
   <div>
@@ -110,10 +138,15 @@ h1{font-size:22px;font-weight:800;letter-spacing:-.5px}
     <div style="flex:2 1 280px">
       <span class="lb">API 키</span>
       <div style="position:relative">
-        <input type="password" id="ki" placeholder="API 키를 입력하세요" oninput="svKey(this.value)" style="padding-right:70px">
+        <input type="password" id="ki" placeholder="API 키를 입력하세요" oninput="svKey(this.value);checkKeyStatus()" style="padding-right:70px">
         <button onclick="tgKey()" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:12px;padding:4px 8px" id="kt">보기</button>
       </div>
       <p style="font-size:11px;color:var(--t3);margin-top:4px">키는 브라우저 localStorage에 저장됩니다</p>
+      <div class="status-bar" id="statusBar">
+        <span class="status-dot status-red" id="statusDot"></span>
+        <span id="statusText">API 키를 입력해 주세요</span>
+        <button class="test-btn" id="testBtn" onclick="testConnection()" style="display:none">연결 테스트</button>
+      </div>
     </div>
   </div>
 </div>
@@ -180,6 +213,86 @@ h1{font-size:22px;font-weight:800;letter-spacing:-.5px}
 </div>
 
 <script>
+const ACCESS_CODE = 'norix88888';
+
+function checkLogin() {
+  const input = document.getElementById('loginCode').value.trim();
+  const err = document.getElementById('loginErr');
+  if (input === ACCESS_CODE) {
+    localStorage.setItem('fss-access', 'granted');
+    document.getElementById('loginOverlay').style.display = 'none';
+  } else {
+    err.style.display = 'block';
+    document.getElementById('loginCode').value = '';
+    setTimeout(() => { err.style.display = 'none'; }, 3000);
+  }
+}
+
+if (localStorage.getItem('fss-access') === 'granted') {
+  document.addEventListener('DOMContentLoaded', function() {
+    const ov = document.getElementById('loginOverlay');
+    if (ov) ov.style.display = 'none';
+  });
+}
+
+function updateStatus(color, text, showTest) {
+  const dot = document.getElementById('statusDot');
+  const txt = document.getElementById('statusText');
+  const btn = document.getElementById('testBtn');
+  if (!dot) return;
+  dot.className = 'status-dot status-' + color;
+  txt.textContent = text;
+  btn.style.display = showTest ? 'inline-block' : 'none';
+}
+
+function checkKeyStatus() {
+  const el = document.getElementById('ki');
+  const key = el ? el.value.trim() : '';
+  if (!key) {
+    updateStatus('red', 'API 키를 입력해 주세요', false);
+  } else {
+    updateStatus('yellow', 'API 키 입력됨 (연결 테스트 필요)', true);
+  }
+}
+
+async function testConnection() {
+  updateStatus('yellow', '연결 테스트 중...', false);
+  try {
+    const provider = (typeof cProv !== 'undefined' && cProv) ? cProv : 'openai';
+    const key = document.getElementById('ki').value.trim();
+    const testPrompt = 'Hello, respond with just "OK"';
+    let response;
+    if (provider === 'openai') {
+      response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json','Authorization':'Bearer '+key},
+        body: JSON.stringify({model:'gpt-5.4-mini',messages:[{role:'user',content:testPrompt}],max_completion_tokens:10})
+      });
+    } else if (provider === 'gemini') {
+      response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+key, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({contents:[{parts:[{text:testPrompt}]}]})
+      });
+    } else {
+      response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+        body: JSON.stringify({model:'claude-haiku-4-5-20251001',messages:[{role:'user',content:testPrompt}],max_tokens:10})
+      });
+    }
+    if (response.ok) {
+      updateStatus('green', '연결됨 - 사용 준비 완료', true);
+    } else {
+      updateStatus('red', 'API 키가 유효하지 않습니다 (오류 '+response.status+')', true);
+    }
+  } catch (e) {
+    updateStatus('red', '연결 실패: '+e.message, true);
+  }
+}
+
+window.addEventListener('load', checkKeyStatus);
+
 // ── 통합 시스템 프롬프트 (모든 카테고리 자동 처리) ──
 const SYS = `당신은 유튜브 채널 대본 전문 리라이터입니다. 운세, 건강, 투자, 자기계발, 연애, 리뷰, 뉴스, 키즈/육아 등 모든 카테고리의 대본을 검수합니다.
 
