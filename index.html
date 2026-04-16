@@ -269,16 +269,19 @@ async function testConnection() {
   try {
     const provider = (typeof cProv !== 'undefined' && cProv) ? cProv : 'openai';
     const key = document.getElementById('ki').value.trim();
+    if (!key) { updateStatus('red', 'API 키를 입력해 주세요', false); return; }
+    // 실제 사용자가 선택한 모델로 테스트 (정확도 높음)
+    const testModel = (typeof cModel !== 'undefined' && cModel) ? cModel : APIS[provider].def;
     const testPrompt = 'Hello, respond with just "OK"';
     let response;
     if (provider === 'openai') {
       response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {'Content-Type':'application/json','Authorization':'Bearer '+key},
-        body: JSON.stringify({model:'gpt-5.4-mini',messages:[{role:'user',content:testPrompt}],max_completion_tokens:10})
+        body: JSON.stringify({model:testModel,messages:[{role:'user',content:testPrompt}],max_completion_tokens:10})
       });
     } else if (provider === 'gemini') {
-      response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+key, {
+      response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+encodeURIComponent(testModel)+':generateContent?key='+encodeURIComponent(key), {
         method: 'POST',
         headers: {'Content-Type':'application/json'},
         body: JSON.stringify({contents:[{parts:[{text:testPrompt}]}]})
@@ -287,13 +290,23 @@ async function testConnection() {
       response = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: {'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-        body: JSON.stringify({model:'claude-haiku-4-5-20251001',messages:[{role:'user',content:testPrompt}],max_tokens:10})
+        body: JSON.stringify({model:testModel,messages:[{role:'user',content:testPrompt}],max_tokens:10})
       });
     }
     if (response.ok) {
       updateStatus('green', '연결됨 - 사용 준비 완료', true);
     } else {
-      updateStatus('red', 'API 키가 유효하지 않습니다 (오류 '+response.status+')', true);
+      let errMsg = '';
+      try { const ed = await response.json(); errMsg = ed.error?.message || ''; } catch(e) {}
+      if (response.status === 401 || response.status === 403) {
+        updateStatus('red', 'API 키 인증 실패 (' + response.status + '): ' + (errMsg || '키를 다시 확인하세요'), true);
+      } else if (response.status === 404) {
+        updateStatus('red', '모델을 찾을 수 없음: "' + testModel + '" — 이 계정에서 사용 불가능', true);
+      } else if (response.status === 429) {
+        updateStatus('red', 'API 사용량 한도 초과 (429). 잠시 후 다시 시도해 주세요.', true);
+      } else {
+        updateStatus('red', 'API 오류 (' + response.status + '): ' + errMsg, true);
+      }
     }
   } catch (e) {
     updateStatus('red', '연결 실패: '+e.message, true);
@@ -479,6 +492,7 @@ function rProv(){
     b.textContent=c.icon+' '+c.name;
     b.onclick=()=>{cProv=k;cModel=c.def;rProv();rModel();
       try{const s=JSON.parse(localStorage.getItem('fss-k'))||{};document.getElementById('ki').value=s[k]||'';}catch(e){document.getElementById('ki').value='';}
+      checkKeyStatus();
     };
     el.appendChild(b);
   });
@@ -621,8 +635,22 @@ async function callAPI(prompt) {
   const body = cfg.body(cModel, prompt);
   const res = await fetchWithProxy(url, { method:'POST', headers, body });
   if (!res.ok) {
-    let em = 'API 오류 (' + res.status + ')';
-    try { const ed = await res.json(); em = ed.error?.message || em; } catch(e) {}
+    let detail = '';
+    try { const ed = await res.json(); detail = ed.error?.message || ed.message || ''; } catch(e) {}
+    let em;
+    if (res.status === 429) {
+      em = 'API 사용량 한도 초과 (429) - 잠시 후 다시 시도해 주세요' + (detail ? ' · ' + detail : '');
+    } else if (res.status === 401 || res.status === 403) {
+      em = 'API 키 인증 실패 (' + res.status + ') - 설정에서 키를 다시 확인하세요' + (detail ? ' · ' + detail : '');
+    } else if (res.status === 404) {
+      em = '모델을 찾을 수 없음 (404) - "' + cModel + '" 모델이 이 계정에서 사용 불가능할 수 있습니다' + (detail ? ' · ' + detail : '');
+    } else if (res.status === 400) {
+      em = '잘못된 요청 (400)' + (detail ? ' · ' + detail : ' - 프롬프트·모델·파라미터 확인');
+    } else if (res.status >= 500) {
+      em = '서버 오류 (' + res.status + ') - AI 제공사 측 문제, 잠시 후 다시 시도해 주세요' + (detail ? ' · ' + detail : '');
+    } else {
+      em = 'API 오류 (' + res.status + ')' + (detail ? ' · ' + detail : '');
+    }
     throw new Error(em);
   }
   const data = await res.json();
@@ -694,7 +722,7 @@ async function run(){
           const orig = r.original;
           const summary = orig.length > 3000 ? orig.slice(0,1500) + '\n...(중략)...\n' + orig.slice(-1500) : orig;
 
-          const metaPrompt = '다음 유튜브 대본' + r.label + '의 핵심 내용을 바탕으로 아래 항목만 생성해 주세요.' + topic + ref + '\n\n## [1] 리스크 요약\n- 통과 가능성: 높음/보통/낮음\n- 핵심 리스크 한 줄\n- 주요 위험 요소 최대 3개\n\n## [4] 제목 (5개)\nSEO 키워드 포함, 후킹+정책 안전 균형\n\n## [5] 썸네일 문구 (5개)\n10자 내외, 징조형·경고형\n\n## [6] 설명글\n첫 2줄 후킹 + 본문 3~5줄 + 면책 + 해시태그 10~15개\n\n## [7] 고정댓글 + CTA\n고정댓글 1개, CTA 3개\n\n## [9] 최종 권고\n\n---\n대본 요약:\n' + summary;
+          const metaPrompt = '다음 유튜브 대본' + r.label + '의 핵심 내용을 바탕으로 아래 항목만 생성해 주세요.' + topic + ref + '\n\n## [1] 리스크 요약\n- 감지된 카테고리: (대본 내용 보고 자동 판단: 운세/건강/투자/자기계발/연애/리뷰/뉴스/키즈/기타 중)\n- 통과 가능성: 높음/보통/낮음\n- 핵심 리스크 한 줄\n- 주요 위험 요소 최대 3개\n\n## [4] 제목 (5개)\nSEO 키워드 포함, 후킹+정책 안전 균형\n\n## [5] 썸네일 문구 (5개)\n10자 내외, 징조형·경고형\n\n## [6] 설명글\n첫 2줄 후킹 + 본문 3~5줄 + 면책 + 해시태그 10~15개\n\n## [7] 고정댓글 + CTA\n고정댓글 1개, CTA 3개\n\n## [9] 최종 권고\n\n---\n대본 요약:\n' + summary;
 
           showProgress(si + 1, allScriptResults.length, '제목·썸네일·설명글 생성 중...');
           btn.textContent = (allScriptResults.length > 1 ? '대본 '+(si+1)+' ' : '') + '제목·썸네일·설명글 생성 중...';
@@ -741,9 +769,10 @@ function renderMd(text){
   let h=esc(text);
   // code blocks first
   h=h.replace(/```[\w]*\n([\s\S]*?)```/g,'<pre>$1</pre>');
-  // headers
-  h=h.replace(/^## (.+)$/gm,'<h2>$1</h2>');
+  // headers (긴 것부터 — ### 먼저, 그 다음 ##, 마지막 # 순서 중요)
   h=h.replace(/^### (.+)$/gm,'<h3>$1</h3>');
+  h=h.replace(/^## (.+)$/gm,'<h2>$1</h2>');
+  h=h.replace(/^# (.+)$/gm,'<h2>$1</h2>');
   // bold
   h=h.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
   // tables
@@ -820,9 +849,17 @@ function hideProgress() {
 window.addEventListener('load', function() {
   setTimeout(function() {
     const keyInput = document.getElementById('ki');
-    if (keyInput && keyInput.value && !localStorage.getItem('saved-api-key')) {
-      // 자동완성으로 채워진 값 제거
-      keyInput.value = '';
+    if (!keyInput) return;
+    // 현재 프로바이더에 실제로 저장된 키를 가져와서,
+    // 입력창 값과 다르면 브라우저 자동완성으로 채워진 것이므로 교정한다.
+    let savedKey = '';
+    try {
+      const s = JSON.parse(localStorage.getItem('fss-k') || '{}');
+      savedKey = s[cProv] || '';
+    } catch (e) { savedKey = ''; }
+    if (keyInput.value !== savedKey) {
+      keyInput.value = savedKey;
+      checkKeyStatus();
     }
   }, 100);
 });
