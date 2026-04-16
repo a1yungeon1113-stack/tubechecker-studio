@@ -289,7 +289,7 @@ const APIS = {
     def:'gpt-5.4',
     url:()=>'https://api.openai.com/v1/chat/completions',
     hdr:k=>({'Content-Type':'application/json','Authorization':'Bearer '+k}),
-    body:(m,p)=>JSON.stringify({model:m,messages:[{role:'system',content:SYS},{role:'user',content:p}],max_tokens:16384,temperature:.7}),
+    body:(m,p)=>JSON.stringify({model:m,messages:[{role:'system',content:SYS},{role:'user',content:p}],max_completion_tokens:16384}),
     ext:d=>d.choices?.[0]?.message?.content||''
   },
   gemini: {
