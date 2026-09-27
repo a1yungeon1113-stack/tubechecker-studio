@@ -101,6 +101,7 @@ h1{font-size:22px;font-weight:800;letter-spacing:-.5px}
     <h1>유튜브 대본 검수기</h1>
   </div>
   <div style="display:flex;gap:8px">
+    <a class="bg" href="storage.html" style="text-decoration:none">저장창고</a>
     <button class="bg" onclick="tgHist()">히스토리 <span id="hb" style="display:none;background:var(--ac);color:#000;border-radius:10px;padding:1px 6px;font-size:11px;font-weight:700;margin-left:4px"></span></button>
     <button class="bg" onclick="tgSet()" id="sb">설정 접기</button>
   </div>
@@ -230,6 +231,8 @@ function checkLogin() {
   if (input === ACCESS_CODE) {
     localStorage.setItem('fss-access', 'granted');
     document.getElementById('loginOverlay').style.display = 'none';
+    // 저장창고에서 접속 코드 입력하러 온 경우 다시 저장창고로
+    if (new URLSearchParams(location.search).get('next') === 'storage') location.href = 'storage.html';
   } else {
     err.style.display = 'block';
     document.getElementById('loginCode').value = '';
