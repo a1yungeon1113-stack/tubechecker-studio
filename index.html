@@ -142,6 +142,45 @@ h1{font-size:22px;font-weight:800;letter-spacing:-.5px}
 .rf-foot{margin-top:12px;font-size:11px;color:var(--t3);line-height:1.6}
 .r-set{background:#4b5b7a}.r-rise{background:#b8862f}.r-punch{background:#e0526f}.r-twist{background:#8b5cf6}.r-cta{background:#2f9e6a}.r-loop{background:#2a9bb0}.r-etc{background:#3a3a50}
 @media(max-width:640px){.rf-hd{flex-direction:column}.rf-hd img{width:100%;height:auto;aspect-ratio:16/9}.rf-kv{grid-template-columns:64px 1fr}.rf-item img{width:80px;height:45px}}
+
+/* ── 상품 녹이기 ── */
+.cp:disabled{opacity:.5;cursor:not-allowed}
+.m-step{font-size:13px;font-weight:800;color:var(--t1);margin:24px 0 10px}
+.m-step.first{margin-top:4px}
+.mf-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;margin-bottom:8px}
+.mf-grid .full{grid-column:1/-1}
+.mf-l{display:block;font-size:12px;color:var(--t3);margin-bottom:4px}
+.m-h{font-size:17px;font-weight:800;color:var(--t1)}
+.fs-row{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--t2);margin-top:8px}
+.fs-n{width:96px;flex-shrink:0}
+.fs-bar{flex:1;height:6px;background:var(--c3);border-radius:3px;overflow:hidden}
+.fs-bar i{display:block;height:100%;background:linear-gradient(90deg,#8b5cf6,#a78bfa)}
+.fs-s{width:22px;text-align:right;color:var(--t1);font-weight:700}
+.fs-r{font-size:12px;color:var(--t3);margin:2px 0 0 106px;line-height:1.5}
+.mc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-top:24px}
+.mc{background:var(--c2);border:1px solid var(--b1);border-radius:12px;padding:16px;display:flex;flex-direction:column;min-width:0}
+.mc.on{border-color:var(--ac);box-shadow:0 0 20px rgba(180,140,255,.08)}
+.mc-n{font-size:15px;font-weight:800;color:var(--t1);line-height:1.4}
+.mc-hook{margin-top:12px;padding:10px 12px;background:var(--c3);border-left:3px solid var(--ac);border-radius:6px;font-size:14px;color:var(--t1);line-height:1.6}
+.rf-kv.mc-kv{grid-template-columns:64px 1fr;margin-top:12px;font-size:12px;flex:1;align-content:start}
+.mc-go{margin-top:14px;padding:12px;font-size:14px}
+.mp-row td:first-child{box-shadow:inset 3px 0 0 var(--ok)}
+.mp-tag{display:block;color:var(--ok);font-size:12px;margin-top:2px}
+.mp-bar{position:relative;height:6px;background:var(--c3);border-radius:3px;margin:8px 0 6px}
+.mp-bar i{position:absolute;top:0;bottom:0;background:var(--ok);border-radius:3px}
+.mu-l{font-size:12px;color:var(--t3);font-weight:600;margin:16px 0 6px;display:flex;align-items:center;gap:8px}
+.mu-cp{padding:2px 8px;font-size:11px}
+.mu{background:var(--c3);border:1px solid var(--b1);border-radius:8px;padding:12px 14px;font-size:13px;line-height:1.7;white-space:pre-wrap;color:var(--t1);word-break:break-word}
+.mu-ko{color:var(--t3);margin-top:6px;font-size:12px}
+.ck{display:flex;gap:10px;font-size:13px;line-height:1.6;margin:6px 0;color:var(--t2)}
+.ck .i{font-weight:800;width:14px;flex-shrink:0;text-align:center}
+.ck.ok .i{color:var(--ok)}
+.ck.warn .i{color:#ffd06b}
+.ck.bad .i{color:var(--er)}
+.m-noimg{width:96px;height:54px;border-radius:6px;background:var(--c3);display:flex;align-items:center;justify-content:center;color:var(--t3);flex-shrink:0}
+.m-del{background:none;border:none;color:var(--t3);cursor:pointer;font-size:14px;padding:4px 8px;flex-shrink:0}
+.m-del:hover{color:var(--er)}
+@media(max-width:640px){.mf-grid{grid-template-columns:1fr}.fs-n{width:84px}.fs-r{margin-left:94px}.m-noimg{width:80px;height:45px}}
 </style>
 </head>
 <body>
@@ -172,6 +211,7 @@ h1{font-size:22px;font-weight:800;letter-spacing:-.5px}
 <div class="tabs">
   <button class="tab on" id="tabBtnReview" onclick="swTab('review')">대본 검수</button>
   <button class="tab" id="tabBtnRef" onclick="swTab('ref')">레퍼런스 해부<span class="cnt" id="refTabCnt" style="display:none"></span></button>
+  <button class="tab" id="tabBtnMelt" onclick="swTab('melt')">상품 녹이기</button>
 </div>
 
 <div id="tabReview">
@@ -371,6 +411,85 @@ h1{font-size:22px;font-weight:800;letter-spacing:-.5px}
 <div id="refDetail" class="card" style="display:none"></div>
 
 </div><!-- /tabRef -->
+
+<!-- ===== 상품 녹이기 탭 ===== -->
+<div id="tabMelt" style="display:none">
+
+<div class="card">
+  <h3 style="font-size:15px;font-weight:700;margin-bottom:8px"><span style="color:var(--ac);margin-right:8px">◈</span>상품 녹이기</h3>
+  <p class="rf-desc">잘 터진 쇼츠의 <strong>구조</strong>를 빌리고 소품 자리에 <strong>상품</strong>을 끼워 넣어요. 영상은 그 자체로 재밌고, 판매는 "그거 어디 거예요?" 댓글에서 시작돼요. 나라별 광고 표시 문구는 설명란·고정 댓글에 자동으로 붙어요.</p>
+
+  <div class="m-step first">1. 레퍼런스</div>
+  <select id="mRef" onchange="meltRefChange()"></select>
+  <div id="mRefInfo" class="rf-note" style="margin-top:6px"></div>
+  <textarea id="mRefText" rows="5" style="display:none;margin-top:8px" placeholder="레퍼런스 대본이나 구조 설명을 붙여넣으세요 (예: 방법 3개를 진지하게 소개하다가 3번째가 황당한 반전)"></textarea>
+
+  <div class="m-step">2. 상품</div>
+  <div class="mf-grid">
+    <div><span class="mf-l">상품명 *</span><input type="text" id="mPName" placeholder="예: 원터치 자동 우산"></div>
+    <div><span class="mf-l">카테고리</span><input type="text" id="mPCat" placeholder="예: 생활용품"></div>
+    <div class="full"><span class="mf-l">뭐 하는 물건인지</span><input type="text" id="mPWhat" placeholder="예: 버튼 한 번에 펴지고 접히는 대형 우산"></div>
+    <div class="full"><span class="mf-l">눈에 띄는 특징 (모양·색·동작)</span><input type="text" id="mPLook" placeholder="예: 버튼 누르면 순식간에 확 펴짐, 지름 118cm, 검정"></div>
+    <div class="full"><span class="mf-l">제일 잘하는 것 1개 * — 이게 반전 장면이 돼요</span><input type="text" id="mPBest" placeholder="예: 버튼 하나로 0.5초 만에 펴짐"></div>
+    <div class="full"><span class="mf-l">판매 링크 (설명란·고정 댓글에만 들어가요)</span><input type="text" id="mPLink" placeholder="https://..."></div>
+  </div>
+  <div class="rf-bar">
+    <select id="mPSaved" onchange="meltLoadProduct(this.value)" style="flex:1 1 200px;width:auto"></select>
+    <button class="cp" onclick="meltSaveProduct()">이 상품 저장</button>
+  </div>
+
+  <div class="m-step">3. 타깃 · 조건</div>
+  <div class="mf-grid">
+    <div><span class="mf-l">나라 (대사·자막 언어)</span>
+      <select id="mCountry">
+        <option value="JP">일본 JP — 일본어</option>
+        <option value="TW">대만 TW — 번체 중국어</option>
+        <option value="KR">한국 KR — 한국어</option>
+        <option value="US">미국 US — 영어</option>
+        <option value="VN">베트남 VN — 베트남어</option>
+        <option value="TH">태국 TH — 태국어</option>
+      </select>
+    </div>
+    <div><span class="mf-l">길이</span>
+      <select id="mLen"><option value="15">쇼츠 15초</option><option value="30" selected>쇼츠 30초</option><option value="60">쇼츠 60초</option></select>
+    </div>
+    <div><span class="mf-l">채널 톤</span>
+      <select id="mTone"><option value="웃김">웃김</option><option value="정보">정보</option><option value="브이로그">브이로그</option><option value="콩트">콩트</option></select>
+    </div>
+    <div><span class="mf-l">영상 안 상품명·브랜드명</span>
+      <select id="mBrand"><option value="0">말하지 않기</option><option value="1">1번</option><option value="2">2번</option></select>
+    </div>
+    <div class="full"><span class="mf-l">금지 표현 (선택)</span><input type="text" id="mBan" placeholder="예: 최고, 1위, 무조건"></div>
+  </div>
+
+  <div class="m-step">4. AI 엔진</div>
+  <div class="mf-grid">
+    <div><select id="mProv" onchange="meltProvChange()"></select></div>
+    <div><select id="mModel" onchange="meltModelChange(this)"></select></div>
+    <div class="full" style="position:relative">
+      <input type="password" id="mKey" placeholder="API 키" oninput="meltKeySet(this.value.trim())" style="padding-right:70px" autocomplete="off" data-lpignore="true">
+      <button class="rf-eye" onclick="tgPw('mKey',this)">보기</button>
+    </div>
+  </div>
+  <p class="rf-note">대본 검수·레퍼런스 탭과 같은 키 저장소를 써요. 글만 쓰는 작업이라 영상 해부보다 훨씬 싸요.</p>
+
+  <div id="mMsg" style="display:none"></div>
+  <button class="bp" id="mGo" onclick="meltConcepts()" style="margin-top:20px">컨셉 3개 만들기</button>
+  <div id="mProg" style="display:none;padding:14px;background:var(--c3);border:1px solid var(--ac);border-radius:10px;margin-top:16px;text-align:center">
+    <div class="lbar" style="margin-bottom:10px"></div>
+    <div style="color:var(--ac);font-weight:600;font-size:14px" id="mProgText">처리 중...</div>
+  </div>
+</div>
+
+<div id="mOut1" class="card" style="display:none"></div>
+<div id="mOut2" class="card" style="display:none"></div>
+
+<div class="card">
+  <h3 style="font-size:15px;font-weight:700;margin-bottom:12px"><span style="color:var(--ac);margin-right:8px">▤</span>기획 히스토리</h3>
+  <div id="mHist"></div>
+</div>
+
+</div><!-- /tabMelt -->
 
 </div>
 
@@ -1161,15 +1280,17 @@ function refKeysToInputs(){
 function tgPw(id,b){const i=document.getElementById(id);if(i.type==='password'){i.type='text';b.textContent='숨기기';}else{i.type='password';b.textContent='보기';}}
 
 // ── 탭 ──
+const TABS={review:'Review',ref:'Ref',melt:'Melt'};
 function swTab(t){
-  const ref=t==='ref';
-  document.getElementById('tabReview').style.display=ref?'none':'block';
-  document.getElementById('tabRef').style.display=ref?'block':'none';
-  document.getElementById('tabBtnReview').classList.toggle('on',!ref);
-  document.getElementById('tabBtnRef').classList.toggle('on',ref);
-  document.getElementById('hdBtns').style.display=ref?'none':'flex';
-  lsSet('fss-tab',ref?'ref':'review');
-  if(ref)refKeysToInputs();
+  if(!TABS[t])t='review';
+  Object.keys(TABS).forEach(k=>{
+    document.getElementById('tab'+TABS[k]).style.display=k===t?'block':'none';
+    document.getElementById('tabBtn'+TABS[k]).classList.toggle('on',k===t);
+  });
+  document.getElementById('hdBtns').style.display=t==='review'?'flex':'none';
+  lsSet('fss-tab',t);
+  if(t==='ref')refKeysToInputs();
+  if(t==='melt')meltOnShow();
 }
 
 // ── 분석 모델 선택 (새 Gemini 모델이 나오면 "직접 입력"으로 추가) ──
@@ -1448,14 +1569,16 @@ function guessCountry(meta,card){
   return '';
 }
 
-// Gemini 출력 모양이 조금 달라도 화면이 깨지지 않게 정리
+// AI 출력 모양이 조금 달라도 화면이 깨지지 않게 정리하는 도우미 (상품 녹이기 탭도 같이 씀)
+const nS=v=>Array.isArray(v)?v.map(nS).filter(Boolean).join(', '):(v==null||typeof v==='object'?'':String(v).trim());
+const nN=v=>{const x=parseFloat(v);return isFinite(x)?x:0;};
+// 시간: 12.5 / "12.5" / "0:12.5" / "12초" 모두 초로
+const nT=v=>{if(typeof v==='string'){const p=v.trim().replace(/(초|s)$/i,'').split(':').map(Number);if(p.length>1&&p.every(isFinite))return p.reduce((a,x)=>a*60+x,0);}return nN(v);};
+const nA=v=>Array.isArray(v)?v:[];
+const nO=v=>!!v&&typeof v==='object'&&!Array.isArray(v);
+
 function normCard(c,meta){
-  const S=v=>Array.isArray(v)?v.map(S).filter(Boolean).join(', '):(v==null||typeof v==='object'?'':String(v).trim());
-  const N=v=>{const x=parseFloat(v);return isFinite(x)?x:0;};
-  // 시간: 12.5 / "12.5" / "0:12.5" / "12초" 모두 초로
-  const T=v=>{if(typeof v==='string'){const p=v.trim().replace(/(초|s)$/i,'').split(':').map(Number);if(p.length>1&&p.every(isFinite))return p.reduce((a,x)=>a*60+x,0);}return N(v);};
-  const A=v=>Array.isArray(v)?v:[];
-  const O=v=>v&&typeof v==='object'&&!Array.isArray(v);
+  const S=nS,N=nN,T=nT,A=nA,O=nO;
   if(Array.isArray(c))c=c[0];
   if(!O(c))c={};
   const h=O(c.hook)?c.hook:{},r=O(c.rhythm)?c.rhythm:{},ci=O(c.comment_insights)?c.comment_insights:{},sk=O(c.skeleton)?c.skeleton:{};
@@ -1626,6 +1749,7 @@ function refCardHTML(e){
   if(c.tags.length)h+='<div class="rf-chips" style="margin-top:20px">'+c.tags.map(t=>'<span class="rf-chip">#'+esc(t)+'</span>').join('')+'</div>';
 
   h+='<div class="rf-acts">'
+    +'<button class="cp" style="color:var(--ac);border-color:var(--ac)" onclick="meltFromRef(\''+id+'\')">이 레퍼런스로 녹이기</button>'
     +'<button class="cp" onclick="refCopy(\''+id+'\',\'md\',this)">카드 복사 (마크다운)</button>'
     +'<button class="cp" onclick="refCopy(\''+id+'\',\'script\',this)">대본만 복사</button>'
     +'<button class="cp" onclick="refToTone(\''+id+'\')">참고 말투로 보내기</button>'
@@ -1764,6 +1888,648 @@ function refImport(inp){
   };
   rd.readAsText(f);
   inp.value='';
+}
+</script>
+
+<script>
+// ════════════════════════════════════════════════════════════
+// 상품 녹이기: 레퍼런스(포맷 카드) + 상품 → 컨셉 3개 → 대본·업로드 세트·2편·점검
+// localStorage: fss-melt(기획 히스토리) · fss-mform(입력값) · fss-prod(저장한 상품)
+//               fss-mp(엔진) · fss-mm(엔진별 모델) · fss-mmx(엔진별 직접 입력 모델) · 키는 fss-k 공유
+// 세 엔진 모두 브라우저 직접 호출 (프록시 없음)
+// ════════════════════════════════════════════════════════════
+const MELT_MAX = 30;
+// 나라별 대사 언어와 광고 표시 문구 (설명란 첫 줄 / 고정 댓글 앞에 자동으로 붙음)
+const MELT_C = {
+  JP:{lang:'일본어', disc:'【PR】本動画にはプロモーションが含まれています。', pin:'【PR】'},
+  TW:{lang:'대만 번체 중국어(繁體中文)', disc:'【廣告】本影片包含業配（廣告合作）內容。', pin:'【廣告】'},
+  KR:{lang:'한국어', disc:'[유료광고 포함] 이 영상에는 광고(협찬·제휴 수수료)가 포함되어 있습니다.', pin:'[유료광고 포함]'},
+  US:{lang:'미국 영어', disc:'#ad — This video contains a paid promotion.', pin:'#ad'},
+  VN:{lang:'베트남어', disc:'[Quảng cáo] Video này có nội dung quảng cáo được tài trợ.', pin:'[Quảng cáo]'},
+  TH:{lang:'태국어', disc:'[โฆษณา] วิดีโอนี้มีเนื้อหาโฆษณา', pin:'[โฆษณา]'}
+};
+// 영상 안에 나오면 안 되는 구매·가격·링크 표현 (대사·자막 검사용)
+const MELT_BUY_RX = /(구매|구입|할인|가격|최저가|링크|주문|購入|割引|価格|値段|最安|(?<!ド)リンク|注文|セール|購買|折扣|優惠|價格|連結|下單|\bbuy\b|\bdiscount\b|\bprice\b|\blink\b|\border now\b|\bsale\b|giảm giá|\bgiá\b|liên kết|ซื้อ|ลดราคา|ราคา|ลิงก์)/i;
+
+const MELT_SYS = `너는 숏폼 광고 기획자다. 잘 터진 쇼츠의 구조를 빌려서, 그 안의 소품 자리에 상품을 자연스럽게 녹인 "광고 같지 않은 광고" 쇼츠를 기획한다. 영상은 그 자체로 재밌어야 하고, 판매는 "그거 어디 거예요?"라는 댓글에서 시작된다.
+
+[포맷 6종]
+- 반전 엔딩형: 썰·상황처럼 시작해서 마지막에 상품이 펀치라인이 된다. 쇼츠 기본값.
+- 문제 해결형: 진짜 쓸모 있는 정보가 8할, 상품은 해결책 중 하나. 정보 채널에 맞다.
+- 장르 위장형: 뉴스·다큐·인터뷰·직장 콩트처럼 시작한다.
+- 메타형: "광고 아니에요"를 반복하다가 점점 대놓고 보여준다. 유머 톤일 때만.
+- 실험·기록형: "30일 써봤다" 같은 일지. 건강·뷰티·앱에 맞다.
+- 시청자 답변형: "댓글에서 제일 많이 물어본 그거". 팬층이 있는 채널에 맞다.
+
+[상품 역할]
+- 해결 도구: 막힌 상황을 상품이 풀어 준다.
+- 반전 아이템: 아무도 예상하지 못한 순간에 상품이 등장해 판을 뒤집는다.
+- 캐릭터 습관 소품: 등장인물이 늘 쓰는 물건이라 자연스럽게 반복 노출된다.
+
+[반드시 지킬 규칙]
+1. 첫 3초 훅은 상품과 무관하게 만든다. 사연·위협·황당한 전제·궁금증으로 시작한다.
+2. 무광고 테스트: 상품을 잘라내도 영상이 성립해야 한다.
+3. 반전은 끊김이 아니라 답이다. 앞에서 쌓은 문제를 상품이 푼다.
+4. 반전 위치는 영상 길이의 70~85%. 반전 후는 짧게 — 장점 1개와 CTA 1개. 30초 영상이면 반전 후 4~5초.
+5. 상품은 영상 안에서 2~3번만 등장하고, 항상 이기는 쪽(긍정 역할)이다. 놀림감이 되거나 실패하는 쪽으로 쓰지 않는다.
+6. 상품의 기능은 화면 속 행동으로 보여준다. 말로 설명하지 않는다.
+7. 영상 안에서 구매·할인·가격·링크를 말하거나 자막으로 쓰지 않는다. 상품명·브랜드명은 지정된 횟수까지만.
+8. 레퍼런스에서는 구조(비트 순서·시간 비율·장치)만 빌린다. 대사와 장면은 새로 쓴다.
+9. 효능·성능을 과장하거나 단정하지 않는다. 건강·의료·금융 효과를 보장하지 않는다. 위험한 행동을 따라 하게 만들지 않는다.
+10. 광고 표시 문구는 시스템이 설명란·고정 댓글에 나라별로 붙인다. 광고 표시를 숨기거나 빼는 기획은 하지 않는다.
+11. 타깃 나라 시청자가 바로 공감할 상황·말투·문화로 쓴다. 번역투를 피한다.
+
+[출력]
+JSON 객체 하나만 출력한다. 설명 문장이나 마크다운은 쓰지 않는다. 대사·자막·제목·설명란·고정 댓글은 지정된 타깃 언어로 쓰고, 이름이 _ko로 끝나는 필드에는 한국어 뜻을 쓴다(타깃 언어가 한국어면 _ko 필드는 빈 문자열). 나머지 설명은 한국어로 쓴다.`;
+
+const MELT_CONCEPT_SCHEMA = `{
+  "tensions": ["상품이 답이 되는 문제 — 타깃 시청자가 공감할 구체적인 상황 한 문장"],
+  "product_roles": [
+    {"role": "해결 도구|반전 아이템|캐릭터 습관 소품 중 하나", "action": "화면에 보이는 상품의 행동", "why": "이 역할이 맞는 이유"}
+  ],
+  "format_scores": [
+    {"format": "반전 엔딩형|문제 해결형|장르 위장형|메타형|실험·기록형|시청자 답변형", "score": 0, "reason": "한 줄"}
+  ],
+  "concepts": [
+    {
+      "name": "컨셉 이름 (짧게)",
+      "format": "포맷 6종 중 하나",
+      "product_role": "상품 역할",
+      "hook": {"line": "첫 3초 대사 (타깃 언어)", "line_ko": "한국어 뜻", "visual": "첫 3초 화면"},
+      "disguise": "시청자가 처음에 무슨 영상이라고 믿고 보는가",
+      "build": "긴장을 어떻게 쌓나",
+      "reveal_pct": 75,
+      "reveal": "반전 순간 — 상품이 행동으로 등장하는 장면",
+      "after": "반전 후 메시지 (장점 1개)",
+      "cta": "영상 안 CTA (구매·가격·링크 언급 없이)",
+      "loop": "마지막이 첫 장면으로 이어지는 장치",
+      "no_ad_test": "상품을 빼도 영상이 성립하는 이유",
+      "production": {"shoot": 0, "stock": 0, "ai": 0, "graphic": 0, "level": "하|중|상", "note": "무엇을 촬영하고 무엇을 스톡·AI·그래픽으로 쓰나"},
+      "risk": "주의할 점"
+    }
+  ]
+}`;
+
+const MELT_SCRIPT_SCHEMA = `{
+  "title_ko": "기획 제목 (한국어)",
+  "duration_sec": 30,
+  "beats": [
+    {"t0": 0, "t1": 2.5, "role": "설정|고조|펀치|반전|CTA|루프|기타 중 하나", "line": "대사·내레이션 (타깃 언어, 없으면 빈 문자열)", "line_ko": "", "visual": "화면·행동·구도 (한국어)", "caption": "화면 자막 (타깃 언어)", "caption_ko": "", "graphics": "그래픽·모션·카메라 효과 (한국어)", "sfx": "효과음·BGM", "product": "상품이 보이는 방식 (상품이 안 나오면 빈 문자열)", "source": "촬영|스톡|AI|그래픽 중 하나"}
+  ],
+  "upload": {
+    "titles": [{"text": "제목 (타깃 언어)", "ko": "한국어 뜻"}],
+    "description": "설명란 (타깃 언어, 판매 링크 자리는 {LINK})",
+    "description_ko": "",
+    "pinned_comment": "고정 댓글 (타깃 언어, 판매 링크 자리는 {LINK})",
+    "pinned_comment_ko": "",
+    "hashtags": ["해시태그 8~12개"]
+  },
+  "followup": {"hook": "2편 첫 3초 대사 (타깃 언어)", "hook_ko": "", "outline": "2편 구성 3~5줄 (한국어)"},
+  "checks": [{"item": "점검 항목", "pass": true, "note": "한 줄"}]
+}`;
+
+const MELT_FIELDS = ['mPName','mPCat','mPWhat','mPLook','mPBest','mPLink','mCountry','mLen','mTone','mBrand','mBan','mRefText'];
+let meltHist = [], meltCur = null, meltBusy = false, meltInited = false, meltTick = null;
+
+// ── 저장 ──
+function meltLoadHist(){
+  let a=[];try{a=JSON.parse(localStorage.getItem('fss-melt')||'[]');}catch(e){a=[];}
+  meltHist=(Array.isArray(a)?a:[]).map(meltNormEntry).filter(Boolean);
+}
+function meltSaveHist(){
+  try{localStorage.setItem('fss-melt',JSON.stringify(meltHist.slice(0,MELT_MAX)));}
+  catch(e){meltMsg('브라우저 저장 공간이 부족해서 기획을 저장하지 못했어요. 오래된 기획이나 레퍼런스 카드를 지워 주세요.','err');}
+}
+function meltNormEntry(x){
+  if(!nO(x)||!/^m\d+$/.test(x.id||'')||!nO(x.ref)||!nO(x.product)||!nO(x.target))return null;
+  const r=x.ref,p=x.product,t=x.target,en=nO(x.engine)?x.engine:{};
+  const U=u=>nO(u)?{in:nN(u.in),out:nN(u.out)}:null;
+  return {
+    id:x.id,createdAt:nS(x.createdAt),
+    ref:{id:/^[A-Za-z0-9_-]{11}$/.test(r.id||'')?r.id:'',name:nS(r.name)||'레퍼런스',brief:nS(r.brief),avg:nN(r.avg)},
+    product:{name:nS(p.name),category:nS(p.category),what:nS(p.what),look:nS(p.look),best:nS(p.best),link:nS(p.link)},
+    target:{country:MELT_C[t.country]?t.country:'JP',len:nN(t.len)||30,tone:nS(t.tone)||'웃김',brand:['0','1','2'].includes(String(t.brand))?String(t.brand):'0',banned:nS(t.banned)},
+    engine:{prov:APIS[en.prov]?en.prov:'gemini',model:nS(en.model)},
+    concepts:x.concepts?normConcepts(x.concepts):null,
+    chosen:Number.isInteger(x.chosen)?x.chosen:-1,
+    script:x.script?normScript(x.script):null,
+    usage1:U(x.usage1),usage2:U(x.usage2)
+  };
+}
+function normConcepts(j){
+  j=nO(j)?j:{};
+  return {
+    tensions:nA(j.tensions).map(nS).filter(Boolean),
+    product_roles:nA(j.product_roles).filter(nO).map(r=>({role:nS(r.role),action:nS(r.action),why:nS(r.why)})),
+    format_scores:nA(j.format_scores).filter(nO).map(f=>({format:nS(f.format),score:Math.max(0,Math.min(10,Math.round(nN(f.score)))),reason:nS(f.reason)})).sort((a,b)=>b.score-a.score),
+    concepts:nA(j.concepts).filter(nO).slice(0,3).map(c=>{
+      const h=nO(c.hook)?c.hook:{},p=nO(c.production)?c.production:{};
+      return {name:nS(c.name),format:nS(c.format),product_role:nS(c.product_role),
+        hook:{line:nS(h.line),line_ko:nS(h.line_ko),visual:nS(h.visual)},
+        disguise:nS(c.disguise),build:nS(c.build),reveal_pct:nN(c.reveal_pct),reveal:nS(c.reveal),after:nS(c.after),
+        cta:nS(c.cta),loop:nS(c.loop),no_ad_test:nS(c.no_ad_test),
+        production:{shoot:nN(p.shoot),stock:nN(p.stock),ai:nN(p.ai),graphic:nN(p.graphic),level:nS(p.level),note:nS(p.note)},
+        risk:nS(c.risk)};
+    })
+  };
+}
+function normScript(j){
+  j=nO(j)?j:{};
+  const u=nO(j.upload)?j.upload:{},f=nO(j.followup)?j.followup:{};
+  const beats=nA(j.beats).filter(nO).map(b=>({t0:nT(b.t0),t1:nT(b.t1),role:nS(b.role),line:nS(b.line),line_ko:nS(b.line_ko),visual:nS(b.visual),caption:nS(b.caption),caption_ko:nS(b.caption_ko),graphics:nS(b.graphics),sfx:nS(b.sfx),product:nS(b.product),source:nS(b.source)})).sort((a,b)=>a.t0-b.t0);
+  beats.forEach(b=>{if(b.t1<b.t0)b.t1=b.t0;});
+  return {
+    title_ko:nS(j.title_ko),
+    duration_sec:nT(j.duration_sec)||(beats.length?beats[beats.length-1].t1:0),
+    beats,
+    upload:{
+      titles:nA(u.titles).map(t=>nO(t)?{text:nS(t.text),ko:nS(t.ko)}:{text:nS(t),ko:''}).filter(t=>t.text),
+      description:nS(u.description),description_ko:nS(u.description_ko),
+      pinned_comment:nS(u.pinned_comment),pinned_comment_ko:nS(u.pinned_comment_ko),
+      hashtags:nA(u.hashtags).map(nS).filter(Boolean).map(t=>t.replace(/^#/,''))
+    },
+    followup:{hook:nS(f.hook),hook_ko:nS(f.hook_ko),outline:Array.isArray(f.outline)?f.outline.map(nS).filter(Boolean).join('\n'):nS(f.outline)},
+    checks:nA(j.checks).filter(nO).map(c=>({item:nS(c.item),pass:c.pass===true||c.pass==='true',note:nS(c.note)})).filter(c=>c.item)
+  };
+}
+
+// ── 초기화 ──
+window.addEventListener('load',function(){
+  meltLoadHist();
+  meltEngineUI();
+  meltFormLoad();
+  meltRefOptions();
+  meltProductOpts();
+  MELT_FIELDS.forEach(k=>{const el=document.getElementById(k);el.addEventListener(el.tagName==='SELECT'?'change':'input',meltFormSave);});
+  meltRenderHist();
+  meltInited=true;
+  if(lsGet('fss-tab')==='melt')swTab('melt');
+  setTimeout(()=>{document.getElementById('mKey').value=meltKeyGet(meltProv());},150); // 자동완성 교정
+});
+function meltOnShow(){
+  if(!meltInited)return;
+  meltRefOptions();
+  document.getElementById('mKey').value=meltKeyGet(meltProv());
+}
+
+// ── 입력값 기억 ──
+function meltFormGet(){try{const o=JSON.parse(localStorage.getItem('fss-mform')||'{}');return nO(o)?o:{};}catch(e){return {};}}
+function meltFormSave(){
+  const o={ref:document.getElementById('mRef').value};
+  MELT_FIELDS.forEach(k=>{o[k]=document.getElementById(k).value;});
+  lsSet('fss-mform',JSON.stringify(o));
+}
+function meltFormLoad(){
+  const o=meltFormGet();
+  MELT_FIELDS.forEach(k=>{
+    if(typeof o[k]!=='string')return;
+    const el=document.getElementById(k);
+    if(el.tagName==='SELECT'){if([...el.options].some(x=>x.value===o[k]))el.value=o[k];}
+    else el.value=o[k];
+  });
+}
+
+// ── 레퍼런스 선택 ──
+function meltRefOptions(){
+  const s=document.getElementById('mRef'),cur=s.value||meltFormGet().ref||'';
+  const items=refSorted();
+  s.innerHTML=(items.length
+    ?items.map(e=>'<option value="'+e.id+'">'+esc((e.card.title_ko||(e.meta&&e.meta.title)||e.id)+(e.card.skeleton.name?' — '+e.card.skeleton.name:'')+' · '+cName(e.country))+'</option>').join('')
+    :'<option value="" disabled>레퍼런스 해부 탭에서 해부한 카드가 여기에 나와요</option>')
+    +'<option value="__paste">직접 붙여넣기…</option>';
+  const vals=[...s.options].map(o=>o.value);
+  s.value=cur&&vals.includes(cur)?cur:(items.length?items[0].id:'__paste');
+  meltRefChange(true);
+}
+function meltRefChange(silent){
+  const v=document.getElementById('mRef').value;
+  document.getElementById('mRefText').style.display=v==='__paste'?'block':'none';
+  const info=document.getElementById('mRefInfo'),e=refLib.find(x=>x.id===v);
+  if(e){
+    const sk=e.card.skeleton,r=e.card.rhythm;
+    info.textContent=[
+      sk.name?'뼈대: '+sk.name:'',
+      sk.structure.length?sk.structure.map(x=>x.role+' '+Math.round(x.pct0)+'–'+Math.round(x.pct1)+'%').join(' → '):'',
+      e.card.prop_slots.length?'소품 슬롯 '+e.card.prop_slots.length+'개':'',
+      r.avg_change_sec?'평균 '+fmtT(r.avg_change_sec)+'초마다 화면 변화':''
+    ].filter(Boolean).join(' · ');
+  }else{
+    info.textContent=v==='__paste'?'대본이나 "어떤 구조인지" 설명을 붙여넣으면 그 구조로 기획해요.':'';
+  }
+  if(!silent)meltFormSave();
+}
+function meltFromRef(id){
+  swTab('melt');
+  document.getElementById('mRef').value=id;
+  meltRefChange();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function meltRefBrief(e){
+  // 대사는 빼고 구조만 넘김 (레퍼런스 대사를 베끼지 않게)
+  const c=e.card,m=e.meta||{};
+  return JSON.stringify({
+    title:c.title_ko||m.title||'',genre:c.genre,language:c.language,duration_sec:refDur(e),summary:c.summary,
+    views:m.views,subs:m.subs,hook:{type:c.hook.type,why:c.hook.why},
+    beats:c.beats.map(b=>({t:[b.t0,b.t1],role:b.role,visual:b.visual,graphics:b.graphics,sfx:b.sfx,prop:b.prop})),
+    rhythm:c.rhythm,prop_slots:c.prop_slots,why_viral:c.why_viral,skeleton:c.skeleton,comment_insights:c.comment_insights
+  });
+}
+
+// ── 저장한 상품 ──
+function meltProducts(){try{const a=JSON.parse(localStorage.getItem('fss-prod')||'[]');return Array.isArray(a)?a.filter(p=>nO(p)&&typeof p.name==='string'&&p.name):[];}catch(e){return [];}}
+function meltProductOpts(){
+  const ps=meltProducts();
+  document.getElementById('mPSaved').innerHTML='<option value="">'+(ps.length?'저장한 상품 불러오기 ('+ps.length+')':'저장한 상품 없음')+'</option>'+ps.map((p,i)=>'<option value="'+i+'">'+esc(p.name)+'</option>').join('');
+}
+function meltSaveProduct(){
+  const v=id=>document.getElementById(id).value.trim();
+  const p={name:v('mPName'),category:v('mPCat'),what:v('mPWhat'),look:v('mPLook'),best:v('mPBest'),link:v('mPLink')};
+  if(!p.name){meltMsg('상품명을 넣은 뒤 저장해 주세요.','err');return;}
+  const ps=meltProducts().filter(x=>x.name!==p.name);ps.unshift(p);
+  lsSet('fss-prod',JSON.stringify(ps.slice(0,30)));
+  meltProductOpts();meltMsg('"'+p.name+'" 상품을 저장했어요.','ok');
+}
+function meltLoadProduct(i){
+  if(i==='')return;
+  const p=meltProducts()[+i];if(!p)return;
+  [['mPName','name'],['mPCat','category'],['mPWhat','what'],['mPLook','look'],['mPBest','best'],['mPLink','link']].forEach(([id,k])=>{document.getElementById(id).value=typeof p[k]==='string'?p[k]:'';});
+  document.getElementById('mPSaved').value='';
+  meltFormSave();
+}
+
+// ── AI 엔진 ──
+function meltProv(){const p=document.getElementById('mProv').value;return APIS[p]?p:'gemini';}
+function meltModel(){return document.getElementById('mModel').value;}
+function meltKey(){return document.getElementById('mKey').value.trim();}
+function meltKeyGet(p){try{return JSON.parse(localStorage.getItem('fss-k')||'{}')[p]||'';}catch(e){return '';}}
+function meltKeySet(v){
+  const p=meltProv();
+  try{let s={};try{s=JSON.parse(localStorage.getItem('fss-k'))||{};}catch(e){}s[p]=v;localStorage.setItem('fss-k',JSON.stringify(s));}catch(e){}
+  if(cProv===p){const ki=document.getElementById('ki');if(ki){ki.value=v;checkKeyStatus();}}
+}
+function meltEngineUI(){
+  const ps=document.getElementById('mProv');
+  ps.innerHTML=Object.entries(APIS).map(([k,c])=>'<option value="'+k+'">'+esc(c.icon+' '+c.name)+'</option>').join('');
+  let p=lsGet('fss-mp');
+  if(!APIS[p])p=gemKeyGet()?'gemini':cProv;
+  ps.value=p;
+  meltModelOpts();
+  document.getElementById('mKey').value=meltKeyGet(p);
+}
+function meltProvChange(){
+  lsSet('fss-mp',meltProv());
+  meltModelOpts();
+  document.getElementById('mKey').value=meltKeyGet(meltProv());
+}
+function meltCustom(){try{const o=JSON.parse(localStorage.getItem('fss-mmx')||'{}');return nO(o)?o:{};}catch(e){return {};}}
+function meltSavedModels(){try{const o=JSON.parse(localStorage.getItem('fss-mm')||'{}');return nO(o)?o:{};}catch(e){return {};}}
+function meltModelOpts(){
+  const p=meltProv(),models=APIS[p].models.slice();
+  nA(meltCustom()[p]).forEach(m=>{if(typeof m==='string'&&/^[A-Za-z0-9._-]{3,60}$/.test(m)&&!models.includes(m))models.push(m);});
+  const sv=meltSavedModels()[p],cur=models.includes(sv)?sv:APIS[p].def;
+  document.getElementById('mModel').innerHTML=models.map(m=>'<option value="'+escA(m)+'"'+(m===cur?' selected':'')+'>'+esc(m)+'</option>').join('')+'<option value="__add">+ 모델 직접 입력…</option>';
+}
+function meltModelChange(s){
+  const p=meltProv(),saved=meltSavedModels();
+  if(s.value!=='__add'){saved[p]=s.value;lsSet('fss-mm',JSON.stringify(saved));return;}
+  const v=(prompt(APIS[p].name+' 모델 ID를 입력하세요')||'').trim();
+  if(/^[A-Za-z0-9._-]{3,60}$/.test(v)){
+    const cu=meltCustom();cu[p]=nA(cu[p]).filter(x=>x!==v).concat(v);lsSet('fss-mmx',JSON.stringify(cu));
+    saved[p]=v;lsSet('fss-mm',JSON.stringify(saved));
+  }else if(v){alert('모델 ID 형식이 맞지 않아요. 영문·숫자·점·하이픈만 쓸 수 있어요.');}
+  meltModelOpts();
+}
+async function meltCall(system,user){
+  const p=meltProv(),model=meltModel(),key=meltKey(),cfg=APIS[p];
+  const send=async json=>{
+    let body;
+    if(p==='openai'){
+      body={model,messages:[{role:'system',content:system},{role:'user',content:user}],max_completion_tokens:16384};
+      if(json)body.response_format={type:'json_object'};
+    }else if(p==='gemini'){
+      body={systemInstruction:{parts:[{text:system}]},contents:[{role:'user',parts:[{text:user}]}],generationConfig:{maxOutputTokens:32768}};
+      if(json)body.generationConfig.responseMimeType='application/json';
+    }else{
+      body={model,system,messages:[{role:'user',content:user}],max_tokens:16384};
+    }
+    try{return await fetch(cfg.url(encodeURIComponent(model),encodeURIComponent(key)),{method:'POST',headers:cfg.hdr(key),body:JSON.stringify(body)});}
+    catch(e){throw new Error(cfg.name+' 연결 실패 — 인터넷 연결을 확인해 주세요');}
+  };
+  let res=await send(p!=='claude');
+  // JSON 모드를 안 받는 모델이면 JSON 모드 없이 한 번 더 (400은 과금 없음)
+  if(!res.ok&&res.status===400&&p!=='claude')res=await send(false);
+  if(!res.ok){
+    let d='';try{const ed=await res.json();d=(ed.error&&ed.error.message)||ed.message||'';}catch(e){}
+    throw new Error(meltErrText(cfg.name,res.status,d,model));
+  }
+  const data=await res.json();
+  const text=cfg.ext(data);
+  if(!text)throw new Error(cfg.name+' 응답이 비어 있어요. 모델과 키를 확인해 주세요.');
+  const j=parseLooseJSON(text);
+  if(!j)throw new Error('응답을 기획서로 바꾸지 못했어요. 다시 해 주세요.');
+  return {json:j,usage:meltUsage(p,data)};
+}
+function meltUsage(p,d){
+  if(p==='openai'){const u=d.usage||{};return {in:u.prompt_tokens||0,out:u.completion_tokens||0};}
+  if(p==='gemini'){const u=d.usageMetadata||{};return {in:u.promptTokenCount||0,out:(u.candidatesTokenCount||0)+(u.thoughtsTokenCount||0)};}
+  const u=d.usage||{};return {in:u.input_tokens||0,out:u.output_tokens||0};
+}
+function meltErrText(name,st,d,model){
+  const x=d?' · '+d:'';
+  if(st===401||st===403)return name+' 키 인증 실패 ('+st+') — 키를 다시 확인해 주세요'+x;
+  if(st===404)return '모델을 찾을 수 없어요: '+model+' — 다른 모델을 골라 주세요'+x;
+  if(st===429)return name+' 사용량 한도 초과 (429) — 잠시 후 다시 해 주세요'+x;
+  if(st===400)return '잘못된 요청 (400)'+x;
+  if(st>=500)return name+' 서버 오류 ('+st+') — 잠시 후 다시 해 주세요'+x;
+  return name+' 오류 ('+st+')'+x;
+}
+
+// ── 프롬프트 ──
+function meltContext(st){
+  const t=st.target,cc=MELT_C[t.country]||MELT_C.JP,p=st.product;
+  return '[타깃] 나라: '+cName(t.country)+' · 대사·자막 언어: '+cc.lang+' · 영상 길이: '+t.len+'초 · 채널 톤: '+t.tone
+    +'\n[조건] 영상 안 상품명·브랜드명 언급: '+(t.brand==='0'?'하지 않음':t.brand+'번까지')+(t.banned?' · 금지 표현: '+t.banned:'')
+    +'\n[상품]\n'+JSON.stringify({name:p.name,category:p.category,what:p.what,look:p.look,best:p.best})
+    +'\n[레퍼런스'+(st.ref.id?' 포맷 카드 — 구조만 빌릴 것':' — 사용자가 붙여넣은 대본·설명, 구조만 빌릴 것')+']\n'+st.ref.brief;
+}
+function meltPromptConcepts(st){
+  return '[작업] 아래 레퍼런스의 구조를 빌려, 상품을 녹인 쇼츠 컨셉 3개를 만들어라.\n'
+    +'1) tensions: 상품이 "답"이 되는 문제(긴장)를 3~5개. 타깃 나라 시청자가 공감할 구체적인 상황으로 쓴다.\n'
+    +'2) product_roles: 상품이 이 레퍼런스의 소품 자리에서 할 수 있는 역할 3개. 화면에 보이는 행동으로 쓴다.\n'
+    +'3) format_scores: 포맷 6종 모두에 0~10점. 채널 톤·영상 길이·상품 성격을 보고 매긴다.\n'
+    +'4) concepts: 서로 다른 컨셉 3개. 첫 번째는 레퍼런스 구조를 가장 충실히 따르고, 나머지 둘은 포맷이나 상품 역할을 바꾼다.\n\n'
+    +meltContext(st)+'\n\n[출력 JSON 형식]\n'+MELT_CONCEPT_SCHEMA;
+}
+function meltPromptScript(st,c){
+  const t=st.target,cc=MELT_C[t.country]||MELT_C.JP,avg=st.ref.avg||1.5;
+  return '[작업] 아래 컨셉으로 촬영·편집에 바로 쓸 수 있는 쇼츠 대본을 써라.\n'
+    +'- 길이 '+t.len+'초. beats는 0초부터 끝까지 빈틈없이 1~4초 단위로 나눈다.\n'
+    +'- 평균 '+fmtT(avg)+'초마다 화면에 변화(컷·자막 팝·그래픽·효과음)가 있게 한다. 반전 직전 0.5~1초는 일부러 비워도 된다.\n'
+    +'- 상품이 나오는 비트는 product에 "어떻게 보이는지"를 쓰고, 나머지 비트는 빈 문자열. 상품은 2~3번만, 첫 3초에는 나오지 않는다.\n'
+    +'- 반전 비트(role "반전")는 영상 길이의 70~85% 지점에서 시작한다.\n'
+    +'- source: 실제 상품이 나오는 컷만 "촬영", 나머지는 "스톡"·"AI"·"그래픽"으로 해서 촬영 비트를 3개 이하로 줄인다.\n'
+    +'- 대사(line)와 화면 자막(caption)은 '+cc.lang+'로 쓴다.\n'
+    +'- upload: 제목 3개, 설명란, 고정 댓글, 해시태그 8~12개. 판매 링크 자리는 {LINK}로 쓴다. 광고 표시 문구(PR·광고·#ad 등)는 쓰지 않는다 — 시스템이 붙인다.\n'
+    +'- followup: 1편 댓글 반응("그거 어디 거예요?")을 받아서 상품을 제대로 보여주는 2편 쇼츠의 훅과 구성.\n'
+    +'- checks: 무광고 테스트 / 반전 위치 / 상품 등장 횟수·긍정 역할 / 영상 안 구매 언급 없음 / 레퍼런스 대사·장면 복사 없음 / 과장·단정 표현 없음 / 촬영 비트 3개 이하 / 자막 언어 일치 — 각각 스스로 점검한다.\n\n'
+    +meltContext(st)+'\n\n[선택한 컨셉]\n'+JSON.stringify(c)+'\n\n[출력 JSON 형식]\n'+MELT_SCRIPT_SCHEMA;
+}
+
+// ── 실행 ──
+function meltReadForm(){
+  const v=id=>document.getElementById(id).value.trim();
+  const rs=document.getElementById('mRef').value;
+  let ref;
+  if(rs==='__paste'){
+    const t=v('mRefText');
+    if(!t)return '레퍼런스 대본이나 구조 설명을 붙여넣어 주세요.';
+    ref={id:'',name:'직접 입력한 레퍼런스',brief:t.slice(0,4000),avg:0};
+  }else{
+    const e=refLib.find(x=>x.id===rs);
+    if(!e)return '레퍼런스를 골라 주세요. 레퍼런스 해부 탭에서 쇼츠를 해부하면 여기에 나와요.';
+    ref={id:e.id,name:e.card.title_ko||(e.meta&&e.meta.title)||e.id,brief:meltRefBrief(e),avg:e.card.rhythm.avg_change_sec||0};
+  }
+  const product={name:v('mPName'),category:v('mPCat'),what:v('mPWhat'),look:v('mPLook'),best:v('mPBest'),link:v('mPLink')};
+  if(!product.name)return '상품명을 넣어 주세요.';
+  if(!product.best)return '상품이 제일 잘하는 것 1개를 넣어 주세요. 이게 반전 장면이 돼요.';
+  const target={country:MELT_C[v('mCountry')]?v('mCountry'):'JP',len:+v('mLen')||30,tone:v('mTone')||'웃김',brand:v('mBrand')||'0',banned:v('mBan')};
+  return {ref,product,target,engine:{prov:meltProv(),model:meltModel()}};
+}
+async function meltConcepts(){
+  if(meltBusy)return;
+  meltMsg('');
+  const st=meltReadForm();
+  if(typeof st==='string'){meltMsg(st,'err');return;}
+  if(!meltKey()){meltMsg(APIS[st.engine.prov].name+' API 키를 넣어 주세요.','err');return;}
+  meltStart('컨셉 만드는 중 (보통 20초~1분)');
+  try{
+    const r=await meltCall(MELT_SYS,meltPromptConcepts(st));
+    st.concepts=normConcepts(r.json);
+    if(!st.concepts.concepts.length)throw new Error('컨셉이 비어 있어요. 다시 해 주세요.');
+    Object.assign(st,{id:'m'+Date.now(),createdAt:new Date().toISOString(),chosen:-1,script:null,usage1:r.usage,usage2:null});
+    meltCur=st;
+    meltHist=[st].concat(meltHist).slice(0,MELT_MAX);
+    meltSaveHist();
+    meltRenderAll();
+    meltMsg('컨셉 3개를 만들었어요. 마음에 드는 컨셉에서 "이 컨셉으로 대본 쓰기"를 누르세요.','ok');
+    setTimeout(()=>document.getElementById('mOut1').scrollIntoView({behavior:'smooth',block:'start'}),50);
+  }catch(e){meltMsg(e.message,'err');}
+  finally{meltEnd();}
+}
+async function meltWrite(i,btn){
+  if(meltBusy||!meltCur||!meltCur.concepts)return;
+  const st=meltCur,c=st.concepts.concepts[i];if(!c)return;
+  if(!meltKey()){meltMsg(APIS[meltProv()].name+' API 키를 넣어 주세요.','err');meltShowMsg();return;}
+  meltStart('대본 쓰는 중 (보통 30초~1분)',btn);
+  try{
+    st.engine={prov:meltProv(),model:meltModel()};
+    const r=await meltCall(MELT_SYS,meltPromptScript(st,c));
+    const sc=normScript(r.json);
+    if(!sc.beats.length)throw new Error('대본이 비어 있어요. 다시 해 주세요.');
+    st.script=meltPost(sc,st);st.chosen=i;st.usage2=r.usage;
+    meltSaveHist();
+    meltMsg('대본을 썼어요. 아래 점검 결과도 확인하세요.','ok');
+    meltEnd();meltRenderAll();
+    setTimeout(()=>document.getElementById('mOut2').scrollIntoView({behavior:'smooth',block:'start'}),50);
+  }catch(e){meltEnd();meltRenderAll();meltMsg(e.message,'err');meltShowMsg();}
+}
+// 광고 표시 문구·제휴 고지·판매 링크를 코드에서 확실하게 붙임
+function meltPost(sc,st){
+  const link=st.product.link,cc=MELT_C[st.target.country]||MELT_C.JP,u=sc.upload;
+  const rep=s=>s.split('{LINK}').join(link||'(판매 링크)');
+  const aff=meltAffNotice(link,st.target.country);
+  let d=rep(u.description);
+  if(!d.startsWith(cc.pin))d=cc.disc+(d?'\n\n'+d:'');
+  if(aff&&!d.includes(aff))d+='\n\n'+aff;
+  let p=rep(u.pinned_comment);
+  if(p&&!p.startsWith(cc.pin))p=cc.pin+' '+p;
+  u.description=d;u.pinned_comment=p;
+  u.description_ko=rep(u.description_ko);u.pinned_comment_ko=rep(u.pinned_comment_ko);
+  return sc;
+}
+function meltAffNotice(link,country){
+  if(/amazon\.|amzn\./i.test(link||''))return country==='JP'?'Amazonのアソシエイトとして、当チャンネルは適格販売により収入を得ています。':'As an Amazon Associate I earn from qualifying purchases.';
+  if(/coupang/i.test(link||''))return '이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.';
+  return '';
+}
+function meltAutoChecks(sc,st){
+  const out=[],b=sc.beats,dur=sc.duration_sec||st.target.len;
+  const pb=b.filter(x=>x.product);
+  out.push(pb.length>=2&&pb.length<=3?{l:'ok',t:'상품 등장 '+pb.length+'번'}:{l:pb.length?'warn':'bad',t:'상품 등장 '+pb.length+'번',n:'2~3번이 좋아요'});
+  out.push(b.some(x=>x.product&&x.t0<3)?{l:'bad',t:'첫 3초에 상품이 나와요',n:'훅은 상품과 무관하게'}:{l:'ok',t:'첫 3초 훅에 상품 없음'});
+  const rv=b.find(x=>x.role==='반전')||b.find(x=>x.role==='펀치');
+  if(rv&&dur){
+    const pc=Math.round(rv.t0/dur*100),t='반전 위치 '+fmtT(rv.t0)+'초 ('+pc+'%)';
+    out.push(pc>=65&&pc<=88?{l:'ok',t}:{l:'warn',t,n:'70~85%가 좋아요'});
+  }else out.push({l:'warn',t:'반전·펀치 비트가 없어요'});
+  const buys=[];
+  b.forEach((x,i)=>[x.line,x.caption].forEach(s=>{const m=s&&s.match(MELT_BUY_RX);if(m)buys.push('#'+(i+1)+' "'+m[0]+'"');}));
+  out.push(buys.length?{l:'warn',t:'영상 안에 구매·가격·링크로 보이는 표현',n:buys.join(', ')}:{l:'ok',t:'영상 안 구매·가격·링크 언급 없음'});
+  const longs=b.map((x,i)=>x.t1-x.t0>4?'#'+(i+1)+' ('+fmtT(x.t1-x.t0)+'초)':'').filter(Boolean);
+  out.push(longs.length?{l:'warn',t:'4초 넘는 비트',n:longs.join(', ')+' — 중간에 자막 팝·줌 같은 변화를 넣으세요'}:{l:'ok',t:'4초 넘게 멈춘 화면 없음'});
+  const shoot=b.filter(x=>/촬영/.test(x.source)).length;
+  out.push(shoot<=3?{l:'ok',t:'촬영 비트 '+shoot+'개'}:{l:'warn',t:'촬영 비트 '+shoot+'개',n:'3개 이하면 제작비가 확 줄어요'});
+  const nm=st.product.name.toLowerCase();
+  if(st.target.brand==='0'&&nm&&b.some(x=>(x.line+' '+x.caption).toLowerCase().includes(nm)))out.push({l:'warn',t:'영상 안에 상품명이 나와요',n:'"말하지 않기"로 설정했어요'});
+  out.push({l:'ok',t:'광고 표시 문구 자동 추가',n:'설명란 첫 줄과 고정 댓글 앞 — 업로드할 때 유튜브 "유료 프로모션 포함"도 체크하세요'});
+  return out;
+}
+
+// ── 화면 ──
+function meltStart(msg,btn){
+  meltBusy=true;
+  document.getElementById('mGo').disabled=true;
+  document.querySelectorAll('#mOut1 button,#mOut2 button').forEach(b=>b.disabled=true);
+  const box=document.getElementById('mProg'),t0=Date.now();
+  box.style.display='block';
+  const draw=()=>{const s=Math.round((Date.now()-t0)/1000);document.getElementById('mProgText').textContent=msg+' · '+s+'초';if(btn)btn.textContent='작성 중… '+s+'초';};
+  clearInterval(meltTick);draw();meltTick=setInterval(draw,1000);
+}
+function meltEnd(){
+  meltBusy=false;clearInterval(meltTick);
+  document.getElementById('mProg').style.display='none';
+  document.getElementById('mGo').disabled=false;
+  document.querySelectorAll('#mOut1 button,#mOut2 button').forEach(b=>b.disabled=false);
+}
+function meltMsg(t,kind){
+  const el=document.getElementById('mMsg');
+  if(!t){el.style.display='none';el.textContent='';return;}
+  el.className=kind==='err'?'ebox':kind==='ok'?'obox':'wbox';
+  el.style.cssText='display:block;margin:16px 0 0;white-space:pre-line';
+  el.textContent=t;
+}
+function meltShowMsg(){document.getElementById('mMsg').scrollIntoView({behavior:'smooth',block:'center'});}
+function meltRenderAll(){meltRenderConcepts(meltCur);meltRenderScript(meltCur);meltRenderHist();}
+function meltUsageText(u,en){
+  return [APIS[en.prov]?APIS[en.prov].name:'',en.model,u?'토큰 입력 '+u.in.toLocaleString()+' / 출력 '+u.out.toLocaleString():''].filter(Boolean).join(' · ');
+}
+function meltRenderConcepts(st){
+  const el=document.getElementById('mOut1');
+  if(!st||!st.concepts){el.style.display='none';el.innerHTML='';return;}
+  const k=st.concepts;
+  let h='<h3 class="m-h">컨셉 3개</h3><div class="rf-sub">'+esc(st.product.name+' × '+st.ref.name+' · '+cName(st.target.country)+' · '+st.target.tone+' · '+st.target.len+'초')+'</div>';
+  if(k.tensions.length)h+=rfSec('상품이 답이 되는 문제','<ul class="rf-list">'+k.tensions.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>');
+  if(k.product_roles.length)h+=rfSec('상품 역할','<dl class="rf-kv">'+k.product_roles.map(r=>rfKv(r.role||'역할',r.action+(r.why?' — '+r.why:''))).join('')+'</dl>');
+  if(k.format_scores.length)h+=rfSec('포맷 점수',k.format_scores.map(f=>'<div class="fs-row"><span class="fs-n">'+esc(f.format)+'</span><span class="fs-bar"><i style="width:'+(f.score*10)+'%"></i></span><span class="fs-s">'+f.score+'</span></div>'+(f.reason?'<div class="fs-r">'+esc(f.reason)+'</div>':'')).join(''));
+  h+='<div class="mc-grid">'+k.concepts.map((c,i)=>meltConceptHTML(c,i,st)).join('')+'</div>';
+  h+='<div class="rf-acts"><button class="cp" onclick="meltConcepts()">지금 입력값으로 컨셉 다시 만들기</button></div>';
+  h+='<div class="rf-foot">'+esc(meltUsageText(st.usage1,st.engine))+'</div>';
+  el.innerHTML=h;el.style.display='block';
+}
+function meltConceptHTML(c,i,st){
+  const p=c.production,done=st.chosen===i&&st.script;
+  const prod=[p.shoot?'촬영 '+p.shoot:'',p.stock?'스톡 '+p.stock:'',p.ai?'AI '+p.ai:'',p.graphic?'그래픽 '+p.graphic:''].filter(Boolean).join(' · ');
+  return '<div class="mc'+(st.chosen===i?' on':'')+'">'
+    +'<div class="mc-n">'+(i+1)+'. '+esc(c.name||'컨셉')+'</div>'
+    +'<div class="rf-chips" style="margin-top:8px">'+(c.format?rfChip('포맷',c.format):'')+(c.product_role?rfChip('상품',c.product_role):'')+(p.level?rfChip('난이도',p.level,p.level==='하'):'')+(c.reveal_pct?rfChip('반전',Math.round(c.reveal_pct)+'%'):'')+'</div>'
+    +(c.hook.line?'<div class="mc-hook">'+esc(c.hook.line)+(c.hook.line_ko?'<span class="rf-orig">'+esc(c.hook.line_ko)+'</span>':'')+'</div>':'')
+    +'<dl class="rf-kv mc-kv">'+rfKv('첫 화면',c.hook.visual)+rfKv('위장',c.disguise)+rfKv('긴장',c.build)+rfKv('반전',c.reveal)+rfKv('반전 후',c.after)+rfKv('CTA',c.cta)+rfKv('루프',c.loop)+rfKv('무광고',c.no_ad_test)+rfKv('제작',[prod,p.note].filter(Boolean).join(' — '))+rfKv('주의',c.risk)+'</dl>'
+    +'<button class="bp mc-go" onclick="meltWrite('+i+',this)">'+(done?'이 컨셉으로 다시 쓰기':'이 컨셉으로 대본 쓰기')+'</button>'
+    +'</div>';
+}
+function meltRenderScript(st){
+  const el=document.getElementById('mOut2');
+  if(!st||!st.script){el.style.display='none';el.innerHTML='';return;}
+  const sc=st.script,c=(st.concepts&&st.concepts.concepts[st.chosen])||{},dur=sc.duration_sec||st.target.len;
+  let h='<h3 class="m-h">대본: '+esc(sc.title_ko||c.name||st.product.name)+'</h3><div class="rf-sub">'+esc([c.name,c.format,cName(st.target.country),Math.round(dur)+'초'].filter(Boolean).join(' · '))+'</div>';
+  const rv=sc.beats.find(x=>x.role==='반전')||sc.beats.find(x=>x.role==='펀치');
+  h+=rfSec('흐름',refTimeline({beats:sc.beats},rv&&dur?Math.min(100,rv.t0/dur*100):null)+meltProductBar(sc.beats,dur));
+  h+=rfSec('대본 ('+sc.beats.length+'비트)','<div class="rf-tw"><table class="rf-tbl" style="min-width:760px"><thead><tr><th>시간</th><th>역할</th><th>대사</th><th>화면</th><th>자막 · 그래픽</th><th>효과음</th><th>소스</th></tr></thead><tbody>'
+    +sc.beats.map((b,i)=>'<tr'+(b.product?' class="mp-row"':'')+'><td class="t">'+(i+1)+'. '+fmtT(b.t0)+'–'+fmtT(b.t1)+'</td><td>'+rfRole(b.role)+'</td>'
+      +'<td>'+esc(b.line)+(b.line_ko?'<span class="rf-orig">'+esc(b.line_ko)+'</span>':'')+'</td>'
+      +'<td>'+esc(b.visual)+(b.product?'<span class="mp-tag">상품: '+esc(b.product)+'</span>':'')+'</td>'
+      +'<td>'+esc(b.caption)+(b.caption_ko?'<span class="rf-orig">'+esc(b.caption_ko)+'</span>':'')+(b.graphics?'<span class="rf-orig">'+esc(b.graphics)+'</span>':'')+'</td>'
+      +'<td>'+esc(b.sfx)+'</td><td>'+esc(b.source)+'</td></tr>').join('')
+    +'</tbody></table></div>');
+  const u=sc.upload;let uh='';
+  if(u.titles.length)uh+='<div class="mu-l">제목 후보</div><ol class="rf-list">'+u.titles.map(t=>'<li>'+esc(t.text)+(t.ko?'<span class="rf-orig">'+esc(t.ko)+'</span>':'')+'</li>').join('')+'</ol>';
+  uh+=meltBlock('설명란',u.description,u.description_ko,'desc');
+  uh+=meltBlock('고정 댓글',u.pinned_comment,u.pinned_comment_ko,'pin');
+  if(u.hashtags.length)uh+=meltBlock('해시태그',meltTags(u),'','tags');
+  h+=rfSec('업로드 세트',uh+'<p class="rf-note" style="margin-top:10px">나라별 광고 표시 문구는 자동으로 붙였어요. 업로드할 때 유튜브 "유료 프로모션 포함"도 체크하세요.</p>');
+  const f=sc.followup;
+  if(f.hook||f.outline)h+=rfSec('2편 (후속 쇼츠)','<dl class="rf-kv">'+rfKv('훅',f.hook,f.hook_ko)+rfKvList('구성',f.outline.split('\n').map(x=>x.trim()).filter(Boolean))+'</dl>');
+  let ck='<div class="mu-l" style="margin-top:0">자동 점검</div>'+meltAutoChecks(sc,st).map(x=>meltCk(x.l,x.t,x.n)).join('');
+  if(sc.checks.length)ck+='<div class="mu-l">AI 자체 점검</div>'+sc.checks.map(x=>meltCk(x.pass?'ok':'warn',x.item,x.note)).join('');
+  h+=rfSec('점검',ck);
+  h+='<div class="rf-acts"><button class="cp" onclick="meltCopy(\'md\',this)">기획서 복사 (마크다운)</button><button class="cp" onclick="meltCopy(\'script\',this)">대본 복사</button><button class="cp" onclick="meltWrite('+st.chosen+',this)">대본 다시 쓰기</button></div>';
+  h+='<div class="rf-foot">'+esc(meltUsageText(st.usage2,st.engine))+'</div>';
+  el.innerHTML=h;el.style.display='block';
+}
+function meltTags(u){return u.hashtags.map(t=>'#'+t.replace(/\s+/g,'')).join(' ');}
+function meltBlock(label,text,ko,key){
+  if(!text)return '';
+  return '<div class="mu-l">'+esc(label)+' <button class="cp mu-cp" onclick="meltCopy(\''+key+'\',this)">복사</button></div><div class="mu">'+esc(text)+'</div>'+(ko?'<div class="mu mu-ko">'+esc(ko)+'</div>':'');
+}
+function meltCk(l,t,n){return '<div class="ck '+l+'"><span class="i">'+(l==='ok'?'✓':l==='bad'?'✕':'!')+'</span><span>'+esc(t)+(n?'<span class="rf-orig">'+esc(n)+'</span>':'')+'</span></div>';}
+function meltProductBar(beats,dur){
+  const pb=beats.filter(b=>b.product);
+  if(!pb.length||!dur)return '';
+  return '<div class="mp-bar">'+pb.map(b=>'<i style="left:'+Math.min(100,b.t0/dur*100).toFixed(1)+'%;width:'+Math.max(1,(b.t1-b.t0)/dur*100).toFixed(1)+'%" title="'+escA('상품: '+b.product)+'"></i>').join('')+'</div><div class="rf-leg"><span><i style="background:var(--ok)"></i>상품 등장</span></div>';
+}
+function meltRenderHist(){
+  const el=document.getElementById('mHist');
+  if(!meltHist.length){el.innerHTML='<p class="rf-empty">아직 기획이 없어요.</p>';return;}
+  el.innerHTML=meltHist.map(h=>'<div class="rf-item'+(meltCur&&meltCur.id===h.id?' on':'')+'" onclick="meltOpen(\''+h.id+'\')">'
+    +(h.ref.id?'<img src="https://i.ytimg.com/vi/'+h.ref.id+'/mqdefault.jpg" alt="" loading="lazy">':'<div class="m-noimg">◈</div>')
+    +'<div class="rf-item-b"><div class="rf-item-t">'+esc(h.product.name+' × '+h.ref.name)+'</div>'
+    +'<div class="rf-item-s">'+esc([cName(h.target.country),h.target.tone,h.target.len+'초',h.createdAt.slice(0,10),h.script?'대본 완료':'컨셉만'].join(' · '))+'</div></div>'
+    +'<button class="m-del" title="삭제" onclick="event.stopPropagation();meltDel(\''+h.id+'\')">✕</button></div>').join('');
+}
+function meltOpen(id){
+  const st=meltHist.find(x=>x.id===id);if(!st||meltBusy)return;
+  meltCur=st;
+  // 그때 입력값을 폼에 되돌려 놓음 (다시 만들기가 같은 조건으로 되게)
+  const set=(k,v)=>{document.getElementById(k).value=v;};
+  set('mPName',st.product.name);set('mPCat',st.product.category);set('mPWhat',st.product.what);set('mPLook',st.product.look);set('mPBest',st.product.best);set('mPLink',st.product.link);
+  set('mCountry',st.target.country);set('mLen',String(st.target.len));set('mTone',st.target.tone);set('mBrand',st.target.brand);set('mBan',st.target.banned);
+  const rs=document.getElementById('mRef');
+  if(st.ref.id&&[...rs.options].some(o=>o.value===st.ref.id))rs.value=st.ref.id;
+  else if(!st.ref.id){rs.value='__paste';set('mRefText',st.ref.brief);}
+  meltRefChange();
+  meltMsg('');meltRenderAll();
+  setTimeout(()=>document.getElementById(st.script?'mOut2':'mOut1').scrollIntoView({behavior:'smooth',block:'start'}),50);
+}
+function meltDel(id){
+  if(meltBusy||!confirm('이 기획을 지울까요?'))return;
+  meltHist=meltHist.filter(x=>x.id!==id);meltSaveHist();
+  if(meltCur&&meltCur.id===id)meltCur=null;
+  meltRenderAll();
+}
+function meltCopy(what,btn){
+  const st=meltCur;if(!st||!st.script)return;
+  const u=st.script.upload;
+  doCp(what==='md'?meltMd(st):what==='script'?meltScriptText(st):what==='desc'?u.description:what==='pin'?u.pinned_comment:meltTags(u),btn);
+}
+function meltScriptText(st){
+  return st.script.beats.map(b=>'['+fmtT(b.t0)+'–'+fmtT(b.t1)+'] '+(b.role?'('+b.role+') ':'')+(b.line||'(대사 없음)')
+    +(b.line_ko?'\n    '+b.line_ko:'')+'\n    화면: '+(b.visual||'-')
+    +(b.caption?'\n    자막: '+b.caption+(b.caption_ko?' ('+b.caption_ko+')':''):'')
+    +(b.product?'\n    상품: '+b.product:'')).join('\n\n');
+}
+function meltMd(st){
+  const sc=st.script,c=(st.concepts&&st.concepts.concepts[st.chosen])||{hook:{}};
+  const P=s=>String(s==null?'':s).replace(/\|/g,'/').replace(/\s*\n\s*/g,' ');
+  const L=['# [기획] '+(sc.title_ko||c.name||st.product.name),'',
+    '- 상품: '+st.product.name+(st.product.best?' — '+st.product.best:''),
+    '- 레퍼런스: '+st.ref.name+(st.ref.id?' (https://www.youtube.com/watch?v='+st.ref.id+')':''),
+    '- 타깃: '+cName(st.target.country)+' · '+st.target.tone+' · '+st.target.len+'초',
+    '- 컨셉: '+[c.name,c.format,c.product_role].filter(Boolean).join(' · ')];
+  if(c.hook.line)L.push('- 훅: '+c.hook.line+(c.hook.line_ko?' ('+c.hook.line_ko+')':''));
+  if(c.reveal)L.push('- 반전: '+c.reveal);
+  L.push('','## 대본','| # | 시간 | 역할 | 대사 | 화면 | 자막·그래픽 | 효과음 | 소스 | 상품 |','|---|---|---|---|---|---|---|---|---|');
+  sc.beats.forEach((b,i)=>L.push('| '+(i+1)+' | '+fmtT(b.t0)+'–'+fmtT(b.t1)+' | '+P(b.role)+' | '+P(b.line+(b.line_ko?' ('+b.line_ko+')':''))+' | '+P(b.visual)+' | '+P([b.caption+(b.caption_ko?' ('+b.caption_ko+')':''),b.graphics].filter(Boolean).join(' / '))+' | '+P(b.sfx)+' | '+P(b.source)+' | '+P(b.product)+' |'));
+  const u=sc.upload;
+  L.push('','## 업로드 세트');
+  if(u.titles.length){L.push('제목 후보:');u.titles.forEach((t,i)=>L.push((i+1)+'. '+t.text+(t.ko?' ('+t.ko+')':'')));}
+  if(u.description)L.push('','설명란:','```',u.description,'```');
+  if(u.pinned_comment)L.push('','고정 댓글:','```',u.pinned_comment,'```');
+  if(u.hashtags.length)L.push('','해시태그: '+meltTags(u));
+  const f=sc.followup;
+  if(f.hook||f.outline){L.push('','## 2편');if(f.hook)L.push('- 훅: '+f.hook+(f.hook_ko?' ('+f.hook_ko+')':''));if(f.outline)L.push('- 구성: '+f.outline.replace(/\n/g,' / '));}
+  L.push('','## 점검');
+  meltAutoChecks(sc,st).forEach(x=>L.push('- '+(x.l==='ok'?'✓':x.l==='bad'?'✕':'!')+' '+x.t+(x.n?' — '+x.n:'')));
+  return L.join('\n');
 }
 </script>
 
